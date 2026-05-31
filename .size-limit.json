@@ -1,0 +1,26 @@
+[
+  {
+    "name": "landing-page",
+    "path": "dist/**/index*.js",
+    "limit": "30 KB",
+    "gzip": true
+  },
+  {
+    "name": "tracks-page",
+    "path": "dist/**/tracks*.js",
+    "limit": "50 KB",
+    "gzip": true
+  },
+  {
+    "name": "js-runner-bundle",
+    "path": "dist/**/JsRunner*.js",
+    "limit": "250 KB",
+    "gzip": true
+  },
+  {
+    "name": "react-runner-bundle",
+    "path": "dist/**/ReactRunner*.js",
+    "limit": "800 KB",
+    "gzip": true
+  }
+]

@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  font-family: theme('fontFamily.sans');
+}
+
+/* Lightweight typography for rendered markdown (readme, concept card). */
+.markdown > * + * { margin-top: 0.5rem; }
+.markdown h1 { @apply text-xl font-semibold; }
+.markdown h2 { @apply text-base font-semibold mt-3; }
+.markdown h3 { @apply text-sm font-semibold mt-3; }
+.markdown p { @apply text-sm leading-relaxed text-neutral-700 dark:text-neutral-300; }
+.markdown code { @apply font-mono text-[0.85em] bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded; }
+.markdown pre { @apply font-mono text-xs bg-neutral-100 dark:bg-neutral-900 p-3 rounded overflow-auto; }
+.markdown pre code { @apply bg-transparent p-0; }
+.markdown strong { @apply font-semibold text-neutral-900 dark:text-neutral-100; }
+.markdown em { @apply italic; }

@@ -1,0 +1,29 @@
+---
+import Layout from '@/components/astro/Layout.astro';
+import TrackCard from '@/components/astro/TrackCard.astro';
+import { getBugsByTrack } from '@/lib/bugs';
+
+const jsBugs = getBugsByTrack('js');
+const reactBugs = getBugsByTrack('react');
+---
+<Layout title="Tracks — Breakpoint">
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <a href="/" class="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100">← Home</a>
+    <h1 class="text-3xl font-semibold mt-6 mb-2">Choose your track</h1>
+    <p class="text-neutral-500 mb-10">Two paths. Start where you are.</p>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <TrackCard
+        title="JavaScript"
+        description="Scope, closures, async, types. Pure language fundamentals."
+        count={jsBugs.length}
+        firstSlug={jsBugs[0]?.meta.id}
+      />
+      <TrackCard
+        title="React"
+        description="Hooks, state, effects, reconciliation. Assumes JS comfort."
+        count={reactBugs.length}
+        firstSlug={reactBugs[0]?.meta.id}
+      />
+    </div>
+  </main>
+</Layout>

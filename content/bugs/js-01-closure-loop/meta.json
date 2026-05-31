@@ -1,0 +1,10 @@
+{
+  "id": "js-01-closure-loop",
+  "track": "js",
+  "title": "All timeouts log the same number",
+  "difficulty": 1,
+  "concepts": ["closures", "var-scope"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "js-iframe"
+}

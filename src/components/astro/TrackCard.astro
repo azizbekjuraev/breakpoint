@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  count: number;
+  firstSlug: string | undefined;
+}
+const { title, description, count, firstSlug } = Astro.props;
+const href = firstSlug ? `/bugs/${firstSlug}` : '#';
+const disabled = !firstSlug;
+---
+<a
+  href={href}
+  class:list={[
+    'block p-6 rounded-lg border border-neutral-200 dark:border-neutral-800 transition',
+    disabled
+      ? 'opacity-50 pointer-events-none'
+      : 'hover:border-neutral-400 dark:hover:border-neutral-600',
+  ]}
+>
+  <div class="flex items-baseline justify-between mb-2">
+    <h2 class="text-xl font-semibold">{title}</h2>
+    <span class="text-sm text-neutral-500 font-mono">{count} {count === 1 ? 'bug' : 'bugs'}</span>
+  </div>
+  <p class="text-neutral-600 dark:text-neutral-400 text-sm">{description}</p>
+  {disabled && (
+    <p class="text-xs text-neutral-400 mt-2">Coming soon</p>
+  )}
+</a>

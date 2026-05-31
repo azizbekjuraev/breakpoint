@@ -1,0 +1,20 @@
+---
+import Layout from '@/components/astro/Layout.astro';
+import BugPlayer from '@/components/react/BugPlayer.tsx';
+import { getAllBugs, getBugBySlug } from '@/lib/bugs';
+
+export function getStaticPaths() {
+  return getAllBugs().map((bug) => ({
+    params: { slug: bug.meta.id },
+  }));
+}
+
+const { slug } = Astro.params;
+const bug = getBugBySlug(slug!);
+if (!bug) {
+  return Astro.redirect('/tracks');
+}
+---
+<Layout title={`${bug.meta.title} — Breakpoint`}>
+  <BugPlayer bug={bug} client:only="react" />
+</Layout>
