@@ -1,0 +1,10 @@
+{
+  "id": "react-05-controlled-input",
+  "track": "react",
+  "title": "Typing in the input does nothing",
+  "difficulty": 1,
+  "concepts": ["controlled-inputs", "forms"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "react-sandpack"
+}

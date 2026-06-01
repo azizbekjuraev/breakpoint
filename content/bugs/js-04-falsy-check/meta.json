@@ -1,0 +1,10 @@
+{
+  "id": "js-04-falsy-check",
+  "track": "js",
+  "title": "User ID zero gets rejected as missing",
+  "difficulty": 1,
+  "concepts": ["truthy-falsy", "null-vs-undefined"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "js-iframe"
+}

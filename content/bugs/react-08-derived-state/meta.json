@@ -1,0 +1,10 @@
+{
+  "id": "react-08-derived-state",
+  "track": "react",
+  "title": "Total never updates when items change",
+  "difficulty": 1,
+  "concepts": ["derived-state", "state-design"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "react-sandpack"
+}

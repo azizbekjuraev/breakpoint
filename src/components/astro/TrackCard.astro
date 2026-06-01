@@ -1,13 +1,14 @@
 ---
 interface Props {
+  track: 'js' | 'react';
   title: string;
   description: string;
-  count: number;
-  firstSlug: string | undefined;
+  bugIds: string[];
 }
-const { title, description, count, firstSlug } = Astro.props;
-const href = firstSlug ? `/bugs/${firstSlug}` : '#';
-const disabled = !firstSlug;
+const { track, title, description, bugIds } = Astro.props;
+const count = bugIds.length;
+const href = count > 0 ? `/tracks/${track}` : '#';
+const disabled = count === 0;
 ---
 <a
   href={href}
@@ -20,7 +21,9 @@ const disabled = !firstSlug;
 >
   <div class="flex items-baseline justify-between mb-2">
     <h2 class="text-xl font-semibold">{title}</h2>
-    <span class="text-sm text-neutral-500 font-mono">{count} {count === 1 ? 'bug' : 'bugs'}</span>
+    <span class="text-sm text-neutral-500 font-mono" data-track-bugs={bugIds.join(',')}>
+      {count} {count === 1 ? 'bug' : 'bugs'}
+    </span>
   </div>
   <p class="text-neutral-600 dark:text-neutral-400 text-sm">{description}</p>
   {disabled && (

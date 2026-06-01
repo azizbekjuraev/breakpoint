@@ -1,0 +1,10 @@
+{
+  "id": "js-06-missing-await",
+  "track": "js",
+  "title": "User name comes back as undefined",
+  "difficulty": 2,
+  "concepts": ["async-await", "promises"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "js-iframe"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "react-02-list-keys",
+  "track": "react",
+  "title": "Input values stick to position instead of moving with items",
+  "difficulty": 2,
+  "concepts": ["keys", "reconciliation", "list-rendering"],
+  "prereqs": [],
+  "estimatedMinutes": 8,
+  "runner": "react-sandpack"
+}

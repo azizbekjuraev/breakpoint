@@ -1,0 +1,10 @@
+{
+  "id": "js-02-array-mutation",
+  "track": "js",
+  "title": "Adding to a list mutates the original",
+  "difficulty": 1,
+  "concepts": ["reference-vs-value", "array-mutation"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "js-iframe"
+}

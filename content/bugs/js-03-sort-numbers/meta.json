@@ -1,0 +1,10 @@
+{
+  "id": "js-03-sort-numbers",
+  "track": "js",
+  "title": "Numbers sort in the wrong order",
+  "difficulty": 1,
+  "concepts": ["array-sort", "comparator"],
+  "prereqs": [],
+  "estimatedMinutes": 3,
+  "runner": "js-iframe"
+}

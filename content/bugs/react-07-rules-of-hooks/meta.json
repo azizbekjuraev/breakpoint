@@ -1,0 +1,10 @@
+{
+  "id": "react-07-rules-of-hooks",
+  "track": "react",
+  "title": "Logging out crashes the component",
+  "difficulty": 2,
+  "concepts": ["rules-of-hooks", "render"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "react-sandpack"
+}

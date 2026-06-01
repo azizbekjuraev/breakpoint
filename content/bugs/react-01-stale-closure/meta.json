@@ -1,0 +1,10 @@
+{
+  "id": "react-01-stale-closure",
+  "track": "react",
+  "title": "Page title never updates when count changes",
+  "difficulty": 1,
+  "concepts": ["useEffect", "dependency-array", "stale-closure"],
+  "prereqs": ["js-01-closure-loop"],
+  "estimatedMinutes": 5,
+  "runner": "react-sandpack"
+}

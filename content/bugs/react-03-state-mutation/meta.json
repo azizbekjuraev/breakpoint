@@ -1,0 +1,10 @@
+{
+  "id": "react-03-state-mutation",
+  "track": "react",
+  "title": "Adding an item to the list does nothing",
+  "difficulty": 1,
+  "concepts": ["state-immutability", "reference-equality"],
+  "prereqs": ["js-02-array-mutation"],
+  "estimatedMinutes": 5,
+  "runner": "react-sandpack"
+}

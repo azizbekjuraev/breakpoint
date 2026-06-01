@@ -1,0 +1,188 @@
+// Source code (as a string) for the test harness that gets injected into
+// the Sandpack iframe. Defines test() / assert / render / screen / fireEvent
+// globals, captures console output, runs registered tests, and posts the
+// RunResult back to the parent window via postMessage.
+//
+// This is plain JS (no TS types) because the Sandpack bundler doesn't apply
+// our tsconfig — types would slow boot. Keep it small and dependency-free
+// beyond react / react-dom which Sandpack provides.
+
+export const HARNESS_SOURCE = `
+import { createRoot } from 'react-dom/client';
+
+const logs = [];
+const errors = [];
+const failures = [];
+const tests = [];
+const startTime = performance.now();
+
+const origLog = console.log;
+const origError = console.error;
+console.log = (...args) => {
+  logs.push(args.map((a) => typeof a === 'string' ? a : (() => {
+    try { return JSON.stringify(a); } catch { return String(a); }
+  })()).join(' '));
+  origLog.apply(console, args);
+};
+console.error = (...args) => {
+  errors.push(args.map((a) => String(a)).join(' '));
+  origError.apply(console, args);
+};
+
+window.addEventListener('error', (e) => errors.push(e.message));
+window.addEventListener('unhandledrejection', (e) => errors.push(String(e.reason)));
+
+window.getLogs = () => logs.slice();
+window.clearLogs = () => { logs.length = 0; };
+
+function deepEqual(a, b) {
+  if (a === b) return true;
+  if (typeof a !== typeof b) return false;
+  if (a === null || b === null) return false;
+  if (typeof a !== 'object') return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  const ak = Object.keys(a), bk = Object.keys(b);
+  if (ak.length !== bk.length) return false;
+  return ak.every((k) => deepEqual(a[k], b[k]));
+}
+
+let container = null;
+let root = null;
+
+window.assert = {
+  ok: (cond, msg) => {
+    if (!cond) throw new Error(msg || 'Expected truthy, got ' + String(cond));
+  },
+  equal: (a, b, msg) => {
+    if (a !== b) throw new Error(msg || 'Expected ' + JSON.stringify(b) + ', got ' + JSON.stringify(a));
+  },
+  deepEqual: (a, b, msg) => {
+    if (!deepEqual(a, b)) {
+      throw new Error(msg || 'Deep equal failed:\\n  expected: ' + JSON.stringify(b) + '\\n  actual:   ' + JSON.stringify(a));
+    }
+  },
+  throws: (fn, msg) => {
+    try { fn(); } catch { return; }
+    throw new Error(msg || 'Expected function to throw');
+  },
+};
+
+window.test = (name, fn) => { tests.push({ name, fn }); };
+
+window.wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+window.cleanup = () => {
+  if (root) { root.unmount(); root = null; }
+  if (container) { container.remove(); container = null; }
+};
+
+window.render = (element) => {
+  window.cleanup();
+  container = document.createElement('div');
+  document.body.appendChild(container);
+  root = createRoot(container);
+  root.render(element);
+};
+
+function getAllTextNodes() {
+  if (!container) return [];
+  const nodes = [];
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) nodes.push(node);
+  return nodes;
+}
+
+function matches(content, text) {
+  if (typeof text === 'string') return content.indexOf(text) !== -1;
+  return text.test(content);
+}
+
+// We can't directly assign to window.screen (read-only on Window). Use
+// defineProperty to override; fall back to globalThis.__screen on failure.
+const screenImpl = {
+  queryByText: (text) => {
+    for (const node of getAllTextNodes()) {
+      if (matches(node.textContent || '', text)) return node.parentElement;
+    }
+    return null;
+  },
+  getByText: (text) => {
+    const el = screenImpl.queryByText(text);
+    if (!el) throw new Error('Could not find text matching: ' + String(text));
+    return el;
+  },
+  queryByRole: (role) => container ? container.querySelector('[role="' + role + '"]') : null,
+  queryAllByRole: (role) => container ? Array.from(container.querySelectorAll('[role="' + role + '"]')) : [],
+  queryByLabelText: (label) => {
+    if (!container) return null;
+    const labels = container.querySelectorAll('label');
+    for (const lbl of labels) {
+      if (matches(lbl.textContent || '', label)) {
+        const forAttr = lbl.getAttribute('for');
+        if (forAttr) return container.querySelector('#' + forAttr);
+        return lbl.querySelector('input, textarea, select');
+      }
+    }
+    return null;
+  },
+  container: () => container,
+};
+
+try {
+  Object.defineProperty(window, 'screen', {
+    value: screenImpl,
+    writable: true,
+    configurable: true,
+  });
+} catch (e) {
+  window.__screen = screenImpl;
+}
+
+function setNativeValue(el, value) {
+  const proto = el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+  const descriptor = Object.getOwnPropertyDescriptor(proto, 'value');
+  if (descriptor && descriptor.set) descriptor.set.call(el, value);
+  else el.value = value;
+}
+
+window.fireEvent = {
+  click: (el) => el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })),
+  change: (el, opts) => {
+    if (opts && opts.target && 'value' in opts.target) setNativeValue(el, opts.target.value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  },
+  submit: (el) => el.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })),
+  keyDown: (el, opts) => el.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, ...(opts || {}) })),
+};
+
+window.__breakpointRun = async () => {
+  for (const t of tests) {
+    window.cleanup();
+    try {
+      const r = t.fn();
+      if (r && typeof r.then === 'function') await r;
+    } catch (e) {
+      failures.push({
+        name: t.name,
+        message: (e && e.message) ? e.message : String(e),
+      });
+    }
+  }
+  window.cleanup();
+  const passedCount = tests.length - failures.length;
+  window.parent.postMessage({
+    type: 'breakpoint:result',
+    result: {
+      passed: failures.length === 0 && tests.length > 0,
+      total: tests.length,
+      passedCount,
+      failures,
+      logs,
+      errors,
+      durationMs: Math.round(performance.now() - startTime),
+    },
+  }, '*');
+};
+`;

@@ -1,0 +1,10 @@
+{
+  "id": "react-09-event-handler-immediately",
+  "track": "react",
+  "title": "Button does nothing when clicked",
+  "difficulty": 1,
+  "concepts": ["event-handlers", "callback-vs-call"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "react-sandpack"
+}

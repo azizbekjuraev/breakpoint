@@ -21,3 +21,9 @@ html {
 .markdown pre code { @apply bg-transparent p-0; }
 .markdown strong { @apply font-semibold text-neutral-900 dark:text-neutral-100; }
 .markdown em { @apply italic; }
+
+/* Completed-bug styling on the per-track list. Attribute selectors win
+   over the default border classes set on the link. */
+a[data-bug-id][data-completed] {
+  @apply border-emerald-300 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20 hover:border-emerald-400 dark:hover:border-emerald-700;
+}

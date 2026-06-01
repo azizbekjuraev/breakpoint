@@ -46,3 +46,38 @@ export function revealHint(bugId: string, level: number): void {
 export function getCompletedIds(): string[] {
   return Object.keys(load().completed);
 }
+
+// Per-bug editor code persistence. Kept in a separate localStorage key so the
+// progress data stays small and easy to inspect.
+const CODE_KEY = 'breakpoint:code:v1';
+
+function loadCode(): Record<string, string> {
+  if (typeof localStorage === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(CODE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveCodeStorage(data: Record<string, string>) {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(CODE_KEY, JSON.stringify(data));
+}
+
+export function saveCode(bugId: string, code: string): void {
+  const data = loadCode();
+  data[bugId] = code;
+  saveCodeStorage(data);
+}
+
+export function getSavedCode(bugId: string): string | null {
+  return loadCode()[bugId] ?? null;
+}
+
+export function clearSavedCode(bugId: string): void {
+  const data = loadCode();
+  delete data[bugId];
+  saveCodeStorage(data);
+}

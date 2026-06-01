@@ -1,0 +1,10 @@
+{
+  "id": "react-10-form-preventdefault",
+  "track": "react",
+  "title": "Form submit clears the page",
+  "difficulty": 1,
+  "concepts": ["forms", "preventDefault", "browser-defaults"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "react-sandpack"
+}

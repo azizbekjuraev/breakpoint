@@ -1,0 +1,10 @@
+{
+  "id": "js-08-var-scope-leak",
+  "track": "js",
+  "title": "Low scores get a grade of undefined",
+  "difficulty": 2,
+  "concepts": ["var-scope", "block-scope", "hoisting"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "js-iframe"
+}

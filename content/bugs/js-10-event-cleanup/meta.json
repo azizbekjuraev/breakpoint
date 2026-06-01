@@ -1,0 +1,10 @@
+{
+  "id": "js-10-event-cleanup",
+  "track": "js",
+  "title": "removeEventListener does nothing",
+  "difficulty": 2,
+  "concepts": ["function-identity", "event-listeners"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "js-iframe"
+}

@@ -13,17 +13,33 @@ const reactBugs = getBugsByTrack('react');
     <p class="text-neutral-500 mb-10">Two paths. Start where you are.</p>
     <div class="grid gap-4 sm:grid-cols-2">
       <TrackCard
+        track="js"
         title="JavaScript"
         description="Scope, closures, async, types. Pure language fundamentals."
-        count={jsBugs.length}
-        firstSlug={jsBugs[0]?.meta.id}
+        bugIds={jsBugs.map((b) => b.meta.id)}
       />
       <TrackCard
+        track="react"
         title="React"
         description="Hooks, state, effects, reconciliation. Assumes JS comfort."
-        count={reactBugs.length}
-        firstSlug={reactBugs[0]?.meta.id}
+        bugIds={reactBugs.map((b) => b.meta.id)}
       />
     </div>
   </main>
+  <script is:inline>
+    (() => {
+      const KEY = 'breakpoint:progress:v1';
+      try {
+        const raw = localStorage.getItem(KEY);
+        const data = raw ? JSON.parse(raw) : { completed: {} };
+        const done = new Set(Object.keys(data.completed));
+        document.querySelectorAll('[data-track-bugs]').forEach((el) => {
+          const ids = (el.getAttribute('data-track-bugs') || '').split(',').filter(Boolean);
+          if (ids.length === 0) return;
+          const count = ids.filter((id) => done.has(id)).length;
+          el.textContent = count + ' / ' + ids.length;
+        });
+      } catch (e) {}
+    })();
+  </script>
 </Layout>

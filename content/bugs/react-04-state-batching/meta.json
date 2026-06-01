@@ -1,0 +1,10 @@
+{
+  "id": "react-04-state-batching",
+  "track": "react",
+  "title": "\"Add 2\" only adds 1",
+  "difficulty": 2,
+  "concepts": ["state-updates", "batching", "functional-updates"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "react-sandpack"
+}

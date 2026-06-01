@@ -1,0 +1,10 @@
+{
+  "id": "js-09-nan-equality",
+  "track": "js",
+  "title": "NaN is never detected as NaN",
+  "difficulty": 1,
+  "concepts": ["nan", "equality"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "js-iframe"
+}

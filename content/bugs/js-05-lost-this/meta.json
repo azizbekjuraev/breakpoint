@@ -1,0 +1,10 @@
+{
+  "id": "js-05-lost-this",
+  "track": "js",
+  "title": "Counter breaks when passed as a callback",
+  "difficulty": 2,
+  "concepts": ["this-binding", "callbacks"],
+  "prereqs": [],
+  "estimatedMinutes": 7,
+  "runner": "js-iframe"
+}

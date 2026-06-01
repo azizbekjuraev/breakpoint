@@ -1,0 +1,10 @@
+{
+  "id": "js-07-shallow-copy",
+  "track": "js",
+  "title": "Editing the copy mutates the original",
+  "difficulty": 1,
+  "concepts": ["shallow-copy", "object-reference"],
+  "prereqs": ["js-02-array-mutation"],
+  "estimatedMinutes": 6,
+  "runner": "js-iframe"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "react-06-input-focus",
+  "track": "react",
+  "title": "Input loses focus after every character",
+  "difficulty": 2,
+  "concepts": ["component-identity", "reconciliation"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "react-sandpack"
+}

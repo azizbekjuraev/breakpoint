@@ -39,7 +39,6 @@ export default function Editor({ value, onChange, language = 'js' }: Props) {
       view.destroy();
       viewRef.current = null;
     };
-    // Editor is initialized once per mount; learner edits drive state via onChange.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 

@@ -1,7 +1,8 @@
 ---
 import Layout from '@/components/astro/Layout.astro';
 import BugPlayer from '@/components/react/BugPlayer.tsx';
-import { getAllBugs, getBugBySlug } from '@/lib/bugs';
+import { getAllBugs, getBugBySlug, getBugsByTrack } from '@/lib/bugs';
+import type { Bug } from '@/lib/types';
 
 export function getStaticPaths() {
   return getAllBugs().map((bug) => ({
@@ -14,7 +15,29 @@ const bug = getBugBySlug(slug!);
 if (!bug) {
   return Astro.redirect('/tracks');
 }
+
+const trackBugs = getBugsByTrack(bug.meta.track);
+const idx = trackBugs.findIndex((b) => b.meta.id === bug.meta.id);
+const nextBug = trackBugs[idx + 1];
+
+const nav = {
+  position: { index: idx + 1, total: trackBugs.length },
+  next: nextBug ? { id: nextBug.meta.id, title: nextBug.meta.title } : null,
+  track: bug.meta.track,
+};
+
+const clientBug: Bug = {
+  meta: bug.meta,
+  files: {
+    starter: bug.files.starter,
+    solution: {},
+    tests: bug.files.tests,
+    hints: bug.files.hints,
+    concept: bug.files.concept,
+    readme: bug.files.readme,
+  },
+};
 ---
 <Layout title={`${bug.meta.title} — Breakpoint`}>
-  <BugPlayer bug={bug} client:only="react" />
+  <BugPlayer bug={clientBug} nav={nav} client:only="react" />
 </Layout>
