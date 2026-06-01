@@ -1,7 +1,3 @@
-// Harness injected into the sandboxed iframe. Defines the test API,
-// captures console output, runs registered tests, posts results to parent.
-// Kept as a plain string so it embeds cleanly into the iframe srcdoc.
-
 export const HARNESS_SCRIPT = `
 (() => {
   const logs = [];

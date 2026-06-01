@@ -1,12 +1,3 @@
-// Source code (as a string) for the test harness that gets injected into
-// the Sandpack iframe. Defines test() / assert / render / screen / fireEvent
-// globals, captures console output, runs registered tests, and posts the
-// RunResult back to the parent window via postMessage.
-//
-// This is plain JS (no TS types) because the Sandpack bundler doesn't apply
-// our tsconfig — types would slow boot. Keep it small and dependency-free
-// beyond react / react-dom which Sandpack provides.
-
 export const HARNESS_SOURCE = `
 import { createRoot } from 'react-dom/client';
 
@@ -98,8 +89,6 @@ function matches(content, text) {
   return text.test(content);
 }
 
-// We can't directly assign to window.screen (read-only on Window). Use
-// defineProperty to override; fall back to globalThis.__screen on failure.
 const screenImpl = {
   queryByText: (text) => {
     for (const node of getAllTextNodes()) {

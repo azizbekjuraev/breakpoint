@@ -1,7 +1,3 @@
-// Minimal markdown renderer for bug READMEs, hints, and concept cards.
-// Handles: headings, paragraphs, fenced code blocks, inline code, bold, italic.
-// Intentionally tiny — zero KB cost. Swap for `marked` if richer output is needed.
-
 const esc = (s: string): string =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 

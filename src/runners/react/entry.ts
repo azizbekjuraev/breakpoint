@@ -1,10 +1,3 @@
-// Entry source (as a string) injected as the Sandpack project's entry point.
-// Order: harness loads first (sets globals) → tests load (registers test()
-// calls) → then we kick off the runner.
-//
-// Wrapped in an async IIFE so we don't depend on top-level-await support in
-// Sandpack's output bundle format.
-
 export const ENTRY_SOURCE = `
 (async () => {
   try {

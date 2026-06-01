@@ -10,7 +10,6 @@ html {
   font-family: theme('fontFamily.sans');
 }
 
-/* Lightweight typography for rendered markdown (readme, concept card). */
 .markdown > * + * {
   margin-top: 0.5rem;
 }
@@ -42,8 +41,6 @@ html {
   @apply italic;
 }
 
-/* Completed-bug styling on the per-track list. Attribute selectors win
-   over the default border classes set on the link. */
 a[data-bug-id][data-completed] {
   @apply border-emerald-300 bg-emerald-50/40 hover:border-emerald-400 dark:border-emerald-900/60 dark:bg-emerald-950/20 dark:hover:border-emerald-700;
 }

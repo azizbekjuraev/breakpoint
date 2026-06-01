@@ -42,7 +42,6 @@ export default function BugPlayer({ bug, nav }: Props) {
 
   const language = firstFile.endsWith('.tsx') || firstFile.endsWith('.jsx') ? 'jsx' : 'js';
 
-  // Debounced save to localStorage
   useEffect(() => {
     const timer = setTimeout(() => {
       saveCode(bug.meta.id, code);

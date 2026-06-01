@@ -47,8 +47,6 @@ export function getCompletedIds(): string[] {
   return Object.keys(load().completed);
 }
 
-// Per-bug editor code persistence. Kept in a separate localStorage key so the
-// progress data stays small and easy to inspect.
 const CODE_KEY = 'breakpoint:code:v1';
 
 function loadCode(): Record<string, string> {

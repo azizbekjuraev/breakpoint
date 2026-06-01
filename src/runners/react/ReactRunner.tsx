@@ -20,7 +20,6 @@ interface RunInstance {
 const RUN_TIMEOUT_MS = 30000;
 
 export default function ReactRunner({ files, tests, run, onResult }: Props) {
-  // Snapshot files when run is triggered
   const [instance, setInstance] = useState<RunInstance | null>(null);
 
   useEffect(() => {
