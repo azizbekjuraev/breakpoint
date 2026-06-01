@@ -11,6 +11,6 @@ test('total reflects the current items after adding', async () => {
 
   assert.ok(
     screen.queryByText('Total: $225'),
-    'Total did not update to $225 — it should be derived from items on each render, not stored in state'
+    'Total did not update to $225 — it should be derived from items on each render, not stored in state',
   );
 });

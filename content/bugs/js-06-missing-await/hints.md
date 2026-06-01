@@ -4,4 +4,4 @@ Look closely at `const user = getUser(id)`. What does `getUser` return — a use
 
 ## Hint 2
 
-`getUser` returns a Promise — an object that *will* resolve to the user, but hasn't yet. You're calling `.name` on the Promise itself, not on the resolved user. Promises don't have a `.name`, so you get `undefined`. Add `await`: `const user = await getUser(id)`.
+`getUser` returns a Promise — an object that _will_ resolve to the user, but hasn't yet. You're calling `.name` on the Promise itself, not on the resolved user. Promises don't have a `.name`, so you get `undefined`. Add `await`: `const user = await getUser(id)`.

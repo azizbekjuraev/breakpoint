@@ -2,11 +2,7 @@ import { useState } from 'react';
 
 function Input({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
-    <input
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="Type your name"
-    />
+    <input value={value} onChange={(e) => onChange(e.target.value)} placeholder="Type your name" />
   );
 }
 

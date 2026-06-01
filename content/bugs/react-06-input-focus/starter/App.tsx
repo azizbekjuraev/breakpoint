@@ -5,11 +5,7 @@ export default function App() {
 
   function Input() {
     return (
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Type your name"
-      />
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Type your name" />
     );
   }
 

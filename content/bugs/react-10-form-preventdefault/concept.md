@@ -1,6 +1,6 @@
 # Browser defaults run unless you stop them
 
-Many HTML elements come with built-in behavior the browser performs automatically: links navigate, forms submit, checkboxes toggle, `target="_blank"` opens new windows. When you attach a React event handler, your handler runs *first* — and then, by default, the browser's behavior runs *too*.
+Many HTML elements come with built-in behavior the browser performs automatically: links navigate, forms submit, checkboxes toggle, `target="_blank"` opens new windows. When you attach a React event handler, your handler runs _first_ — and then, by default, the browser's behavior runs _too_.
 
 For a `<form>`, the default is to navigate to the form's `action` (the current URL if none is set), bundling up form data as query parameters or a POST body. In a single-page app, that's almost never what you want — you want React to handle the submission in JavaScript, not the browser to navigate away.
 

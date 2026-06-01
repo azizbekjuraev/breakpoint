@@ -9,6 +9,6 @@ test('does not log the number 6', async () => {
   const logs = getLogs();
   assert.ok(
     !logs.includes('6'),
-    'Found "6" in logs — closure is still capturing the post-loop value of i'
+    'Found "6" in logs — closure is still capturing the post-loop value of i',
   );
 });

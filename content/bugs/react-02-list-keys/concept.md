@@ -2,7 +2,7 @@
 
 When React renders a list, it has to decide which components from the previous render correspond to which in the new one. The `key` prop is how React makes that match.
 
-With `key={i}` (the array index), the "identity" of each position is fixed. React thinks position 0 is always the same component — so when you insert at the front, the new item gets the old item's instance (and its state), and the displaced items shuffle through other indexes. Component state belongs to a *position*, not to your data.
+With `key={i}` (the array index), the "identity" of each position is fixed. React thinks position 0 is always the same component — so when you insert at the front, the new item gets the old item's instance (and its state), and the displaced items shuffle through other indexes. Component state belongs to a _position_, not to your data.
 
 With `key={item.id}` (a stable id from the data), React matches instances by id. Inserts, removes, and reorders all preserve state per item — exactly what you usually want.
 

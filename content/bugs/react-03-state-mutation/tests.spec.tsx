@@ -12,6 +12,6 @@ test('Cherry appears in the list after clicking Add Cherry', async () => {
 
   assert.ok(
     screen.queryByText('Cherry'),
-    'Cherry did not appear — mutating items and calling setItems with the same reference does not trigger a re-render'
+    'Cherry did not appear — mutating items and calling setItems with the same reference does not trigger a re-render',
   );
 });

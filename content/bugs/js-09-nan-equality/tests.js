@@ -1,14 +1,14 @@
 test('NaN is detected as invalid', () => {
   assert.ok(
     getLogs().includes('NaN: true'),
-    'NaN was reported as valid — you cannot compare to NaN with === or ==.'
+    'NaN was reported as valid — you cannot compare to NaN with === or ==.',
   );
 });
 
 test('"abc" * 2 (also NaN) is detected as invalid', () => {
   assert.ok(
     getLogs().includes('abc: true'),
-    "'abc' * 2 evaluates to NaN, but the check missed it."
+    "'abc' * 2 evaluates to NaN, but the check missed it.",
   );
 });
 

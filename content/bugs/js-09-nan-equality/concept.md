@@ -14,7 +14,7 @@ That means you can never check for NaN with `=== NaN`. The check always fails, r
 
 The reliable check is `Number.isNaN(value)`. It returns `true` only for the actual `NaN` value — nothing else.
 
-Avoid the *global* `isNaN()`. It coerces its argument to a number first, so `isNaN('hello')` is `true` (because `'hello'` becomes `NaN` when coerced). That's almost never what you want. `Number.isNaN` is the strict, modern version.
+Avoid the _global_ `isNaN()`. It coerces its argument to a number first, so `isNaN('hello')` is `true` (because `'hello'` becomes `NaN` when coerced). That's almost never what you want. `Number.isNaN` is the strict, modern version.
 
 Why NaN behaves this way: it follows the IEEE-754 floating-point spec, where any operation involving NaN propagates NaN — including comparison. It's intentional, not a bug. But it makes "is this value NaN?" a question you can't answer with `===`.
 

@@ -1,6 +1,6 @@
 ## Hint 1
 
-What does `Array.prototype.sort()` do *by default* when comparing two elements? Try sorting `['10', '2', '20']` (strings) in your head.
+What does `Array.prototype.sort()` do _by default_ when comparing two elements? Try sorting `['10', '2', '20']` (strings) in your head.
 
 ## Hint 2
 

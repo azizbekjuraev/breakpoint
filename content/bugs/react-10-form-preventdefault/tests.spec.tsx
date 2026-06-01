@@ -16,6 +16,6 @@ test('submitting shows the confirmation without reloading', async () => {
 
   assert.ok(
     screen.queryByText('Submitted: Alice'),
-    '"Submitted: Alice" did not appear — without preventDefault, the browser submits the form normally and reloads the iframe'
+    '"Submitted: Alice" did not appear — without preventDefault, the browser submits the form normally and reloads the iframe',
   );
 });

@@ -8,6 +8,6 @@ test('does not return undefined', async () => {
   const logs = getLogs();
   assert.ok(
     !logs.some((l) => l.includes('undefined')),
-    'getUserName returned undefined — you may be accessing .name on the Promise itself instead of the resolved user'
+    'getUserName returned undefined — you may be accessing .name on the Promise itself instead of the resolved user',
   );
 });

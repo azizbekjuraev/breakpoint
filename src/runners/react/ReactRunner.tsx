@@ -24,7 +24,10 @@ export default function ReactRunner({ files, tests, run, onResult }: Props) {
   const [instance, setInstance] = useState<RunInstance | null>(null);
 
   useEffect(() => {
-    if (run) setInstance({ files, tests, id: Date.now() });
+    if (run) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setInstance({ files, tests, id: Date.now() });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run]);
 

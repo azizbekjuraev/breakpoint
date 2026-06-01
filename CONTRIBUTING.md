@@ -23,7 +23,7 @@ content/bugs/<id>/
 
 ## Quality bar
 
-- One *clear* visible symptom
+- One _clear_ visible symptom
 - Tests must reject "symptom-patching" — they verify the root cause
 - Hints escalate: L1 "where to look", L2 "what concept is in play"
 - Concept card is 100–250 words, plain English

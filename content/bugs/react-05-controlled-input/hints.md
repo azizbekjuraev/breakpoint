@@ -1,6 +1,6 @@
 ## Hint 1
 
-The input has a `value` prop. That makes it *controlled* — React owns its value. Where is the user's typing supposed to go?
+The input has a `value` prop. That makes it _controlled_ — React owns its value. Where is the user's typing supposed to go?
 
 ## Hint 2
 

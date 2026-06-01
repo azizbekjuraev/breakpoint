@@ -1,12 +1,12 @@
 # `var` leaks out of blocks
 
-In JavaScript, `var` is *function-scoped*, not *block-scoped*. A `var` declaration inside any block (if, for, while) is hoisted to the top of the enclosing function — meaning the variable exists for the entire function, starting with the value `undefined`, until some assignment runs.
+In JavaScript, `var` is _function-scoped_, not _block-scoped_. A `var` declaration inside any block (if, for, while) is hoisted to the top of the enclosing function — meaning the variable exists for the entire function, starting with the value `undefined`, until some assignment runs.
 
 This breaks one of the most natural mental models you bring from other languages: that braces create scopes. With `var`, they don't. With `let` and `const`, they do.
 
 The result: variables declared inside conditional branches "leak" outside, but stay `undefined` if no branch ran. Reading the variable later gives you `undefined` — no error, no warning, just silent bad data.
 
-`let` and `const` are block-scoped. A `let grade` inside an `if` block exists *only* inside that block. Reading it outside the block is a ReferenceError. The compiler catches the bug for you.
+`let` and `const` are block-scoped. A `let grade` inside an `if` block exists _only_ inside that block. Reading it outside the block is a ReferenceError. The compiler catches the bug for you.
 
 The fix is two-part:
 

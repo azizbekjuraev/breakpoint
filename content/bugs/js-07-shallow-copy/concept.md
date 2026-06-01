@@ -1,8 +1,8 @@
 # Spread is a shallow copy
 
-In JavaScript, object spread (`{...obj}`) and `Object.assign({}, obj)` create a new top-level object whose properties are *copied by reference* for non-primitive values. Nested objects and arrays are not cloned — they're shared.
+In JavaScript, object spread (`{...obj}`) and `Object.assign({}, obj)` create a new top-level object whose properties are _copied by reference_ for non-primitive values. Nested objects and arrays are not cloned — they're shared.
 
-When you spread `original` to make `copy`, you get a new outer object, but `copy.settings` is the *same object in memory* as `original.settings`. Mutating it from either side affects both — they're two names for one thing.
+When you spread `original` to make `copy`, you get a new outer object, but `copy.settings` is the _same object in memory_ as `original.settings`. Mutating it from either side affects both — they're two names for one thing.
 
 Three ways to deep-copy:
 

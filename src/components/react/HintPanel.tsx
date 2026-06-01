@@ -10,17 +10,17 @@ export default function HintPanel({ hints, state }: Props) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold">Hints</h3>
         <span className="text-xs text-neutral-500">
           {state.revealed} / {hints.length} revealed
         </span>
       </div>
-      <ol className="space-y-2 mb-3">
+      <ol className="mb-3 space-y-2">
         {hints.slice(0, state.revealed).map((hint, i) => (
           <li
             key={i}
-            className="text-sm text-neutral-700 dark:text-neutral-300 pl-4 border-l-2 border-amber-400"
+            className="border-l-2 border-amber-400 pl-4 text-sm text-neutral-700 dark:text-neutral-300"
           >
             {hint}
           </li>
@@ -30,7 +30,7 @@ export default function HintPanel({ hints, state }: Props) {
         <button
           type="button"
           onClick={state.next}
-          className="text-xs underline text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100"
+          className="text-xs text-neutral-500 underline hover:text-neutral-900 dark:hover:text-neutral-100"
         >
           Reveal next hint
         </button>

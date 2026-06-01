@@ -4,13 +4,7 @@ import Editor from './Editor';
 import HintPanel from './HintPanel';
 import ConceptCard from './ConceptCard';
 import TestResults from './TestResults';
-import {
-  markCompleted,
-  isCompleted,
-  saveCode,
-  getSavedCode,
-  clearSavedCode,
-} from '@/lib/progress';
+import { markCompleted, isCompleted, saveCode, getSavedCode, clearSavedCode } from '@/lib/progress';
 import { useHintState } from '@/lib/hint-state';
 import { renderMarkdown } from '@/lib/markdown';
 
@@ -43,9 +37,7 @@ export default function BugPlayer({ bug, nav }: Props) {
   const [editorKey, setEditorKey] = useState(0);
   const [result, setResult] = useState<RunResult | null>(null);
   const [running, setRunning] = useState(false);
-  const [completedBefore, setCompletedBefore] = useState<boolean>(() =>
-    isCompleted(bug.meta.id),
-  );
+  const [completedBefore, setCompletedBefore] = useState<boolean>(() => isCompleted(bug.meta.id));
   const hintState = useHintState(bug.meta.id, bug.files.hints.length);
 
   const language = firstFile.endsWith('.tsx') || firstFile.endsWith('.jsx') ? 'jsx' : 'js';
@@ -82,34 +74,34 @@ export default function BugPlayer({ bug, nav }: Props) {
   const isDirty = code !== starterCode;
 
   return (
-    <div className="grid lg:grid-cols-[1fr_440px] min-h-screen">
+    <div className="grid min-h-screen lg:grid-cols-[1fr_440px]">
       <div className="flex flex-col border-r border-neutral-200 dark:border-neutral-800">
-        <header className="px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-4">
+        <header className="flex items-center justify-between gap-4 border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
           <div className="min-w-0">
-            <div className="flex items-center gap-3 mb-1">
+            <div className="mb-1 flex items-center gap-3">
               <a
                 href={`/tracks/${nav.track}`}
                 className="text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100"
               >
                 ← Track
               </a>
-              <span className="text-xs font-mono text-neutral-400">
+              <span className="font-mono text-xs text-neutral-400">
                 {nav.position.index} / {nav.position.total}
               </span>
               {completedBefore && (
-                <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400">
+                <span className="font-mono text-xs text-emerald-600 dark:text-emerald-400">
                   ✓ solved
                 </span>
               )}
             </div>
-            <h1 className="text-lg font-semibold truncate">{bug.meta.title}</h1>
+            <h1 className="truncate text-lg font-semibold">{bug.meta.title}</h1>
           </div>
-          <div className="shrink-0 flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               onClick={handleReset}
               disabled={!isDirty}
-              className="text-xs px-3 py-2 rounded-md text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="rounded-md px-3 py-2 text-xs text-neutral-500 transition hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40 dark:hover:text-neutral-100"
               title="Restore the starter code"
             >
               Reset
@@ -118,29 +110,29 @@ export default function BugPlayer({ bug, nav }: Props) {
               type="button"
               onClick={() => setRunning(true)}
               disabled={running}
-              className="px-4 py-2 rounded-md bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 disabled:opacity-50 transition"
+              className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-700 disabled:opacity-50 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
             >
               {running ? 'Running…' : 'Run tests'}
             </button>
           </div>
         </header>
 
-        <div className="flex-1 min-h-0">
+        <div className="min-h-0 flex-1">
           <Editor key={editorKey} value={code} onChange={setCode} language={language} />
         </div>
       </div>
 
-      <aside className="flex flex-col max-h-screen overflow-auto">
+      <aside className="flex max-h-screen flex-col overflow-auto">
         <div
-          className="px-6 py-4 markdown border-b border-neutral-200 dark:border-neutral-800"
+          className="markdown border-b border-neutral-200 px-6 py-4 dark:border-neutral-800"
           dangerouslySetInnerHTML={{ __html: renderMarkdown(bug.files.readme) }}
         />
 
-        <div className="px-6 py-4 border-b border-neutral-200 dark:border-neutral-800">
+        <div className="border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
           <HintPanel hints={bug.files.hints} state={hintState} />
         </div>
 
-        <div className="px-6 py-4 flex-1">
+        <div className="flex-1 px-6 py-4">
           <Suspense fallback={<p className="text-sm text-neutral-500">Loading runner…</p>}>
             {bug.meta.runner === 'js-iframe' ? (
               <JsRunner code={code} tests={bug.files.tests} run={running} onResult={handleResult} />
@@ -158,19 +150,19 @@ export default function BugPlayer({ bug, nav }: Props) {
         </div>
 
         {showSuccess && (
-          <div className="px-6 py-4 border-t border-neutral-200 dark:border-neutral-800 space-y-4">
+          <div className="space-y-4 border-t border-neutral-200 px-6 py-4 dark:border-neutral-800">
             <ConceptCard markdown={bug.files.concept} />
             {nav.next ? (
               <a
                 href={`/bugs/${nav.next.id}`}
-                className="inline-flex items-center px-4 py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition"
+                className="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
               >
                 Next: {nav.next.title} →
               </a>
             ) : (
               <a
                 href={`/tracks/${nav.track}`}
-                className="inline-flex items-center px-4 py-2 rounded-md border border-neutral-300 dark:border-neutral-700 text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+                className="inline-flex items-center rounded-md border border-neutral-300 px-4 py-2 text-sm font-medium transition hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
               >
                 You finished the track →
               </a>

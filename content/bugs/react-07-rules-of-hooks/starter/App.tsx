@@ -14,7 +14,9 @@ export default function App() {
 
   return (
     <div>
-      <p>{user.name}'s count: {count}</p>
+      <p>
+        {user.name}'s count: {count}
+      </p>
       <button onClick={() => setCount(count + 1)}>+</button>
       <button onClick={() => setUser(null)}>Logout</button>
     </div>

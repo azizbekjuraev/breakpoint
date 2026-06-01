@@ -1,6 +1,6 @@
 # `setState` with a stale value batches incorrectly
 
-In React, state updates inside an event handler are *batched* — React doesn't immediately re-render between each call. Instead, it queues the updates and applies them once the handler finishes.
+In React, state updates inside an event handler are _batched_ — React doesn't immediately re-render between each call. Instead, it queues the updates and applies them once the handler finishes.
 
 When you write `setCount(count + 1)`, the value `count + 1` is computed using the snapshot of `count` from the render that created this handler. If you call `setCount(count + 1)` twice, both calls compute the same target (e.g., `0 + 1`), and the final batched state is `1`.
 

@@ -7,7 +7,7 @@ interface Props {
 export default function ConceptCard({ markdown }: Props) {
   return (
     <div>
-      <div className="text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400 font-semibold mb-2">
+      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
         Concept unlocked
       </div>
       <div className="markdown" dangerouslySetInnerHTML={{ __html: renderMarkdown(markdown) }} />

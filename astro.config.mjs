@@ -3,9 +3,5 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://breakpoint.dev',
-  integrations: [
-    react(),
-    tailwind({ applyBaseStyles: false }),
-  ],
+  integrations: [react(), tailwind({ applyBaseStyles: false })],
 });

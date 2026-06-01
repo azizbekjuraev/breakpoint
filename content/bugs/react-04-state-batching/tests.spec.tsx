@@ -11,7 +11,7 @@ test('clicking "Add 2" once increments count by 2', async () => {
 
   assert.ok(
     screen.queryByText('Count: 2'),
-    'Count should be 2, but both setCount calls saw the same stale count (0). Use the functional updater.'
+    'Count should be 2, but both setCount calls saw the same stale count (0). Use the functional updater.',
   );
 });
 
@@ -24,8 +24,5 @@ test('clicking "Add 2" twice increments count by 4', async () => {
   fireEvent.click(screen.getByText('Add 2'));
   await wait(50);
 
-  assert.ok(
-    screen.queryByText('Count: 4'),
-    'Expected count to be 4 after two clicks'
-  );
+  assert.ok(screen.queryByText('Count: 4'), 'Expected count to be 4 after two clicks');
 });

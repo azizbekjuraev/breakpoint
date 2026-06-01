@@ -8,7 +8,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "astro check && pnpm lint",
+    "lint": "eslint .",
+    "format": "prettier --write .",
     "validate-bugs": "tsx scripts/validate-bugs.ts",
     "new-bug": "tsx scripts/new-bug.ts",
     "size": "size-limit"
@@ -28,13 +30,27 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@eslint/js": "^9.19.0",
     "@size-limit/preset-app": "^11.1.6",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.60.0",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.7.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^15.15.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "size-limit": "^11.1.6",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.60.0",
     "zod": "^3.24.0"
   }
 }

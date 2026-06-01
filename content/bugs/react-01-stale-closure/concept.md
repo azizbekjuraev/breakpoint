@@ -2,7 +2,7 @@
 
 Every time a function component renders, its body re-runs — including the function you pass to `useEffect`. That function "closes over" the variables it reads from the surrounding render scope, capturing their values for that render.
 
-React then decides whether to actually *run* the captured effect by comparing the dependency array to last render's. If the deps are unchanged (or the array is empty), React skips the run. The effect from a previous render is kept; its captured variables are frozen.
+React then decides whether to actually _run_ the captured effect by comparing the dependency array to last render's. If the deps are unchanged (or the array is empty), React skips the run. The effect from a previous render is kept; its captured variables are frozen.
 
 When you write `useEffect(() => { ... }, [])`, you're telling React: "run this once on mount, never again." The closure captures `count` when it's `0` and never sees a new value. The visible `count` in JSX updates on every render because that's a fresh closure each time — but the effect is the original one, looking at the original `count`.
 

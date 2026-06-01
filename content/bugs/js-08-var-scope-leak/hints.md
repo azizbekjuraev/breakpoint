@@ -4,4 +4,4 @@ What's the scope of a variable declared with `var` inside an `if` block? Try thi
 
 ## Hint 2
 
-`var` is *function-scoped*, not block-scoped. Every `var grade` inside the if-branches gets hoisted to the top of the function — `grade` exists for the entire function with the value `undefined` until an assignment runs. For score 50, no branch assigns it, so `grade` stays `undefined`. Fix it by declaring once at the top with a default: `let grade = 'F'`. (Then `let` will also catch this kind of mistake at compile time.)
+`var` is _function-scoped_, not block-scoped. Every `var grade` inside the if-branches gets hoisted to the top of the function — `grade` exists for the entire function with the value `undefined` until an assignment runs. For score 50, no branch assigns it, so `grade` stays `undefined`. Fix it by declaring once at the top with a default: `let grade = 'F'`. (Then `let` will also catch this kind of mistake at compile time.)

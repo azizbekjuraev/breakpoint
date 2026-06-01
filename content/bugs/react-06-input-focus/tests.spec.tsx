@@ -14,6 +14,6 @@ test('input DOM element is preserved across state updates', async () => {
   assert.equal(
     inputBefore,
     inputAfter,
-    'The input was replaced with a new DOM element — defining a component inside another component creates a new component type on every render, which unmounts and remounts the subtree'
+    'The input was replaced with a new DOM element — defining a component inside another component creates a new component type on every render, which unmounts and remounts the subtree',
   );
 });

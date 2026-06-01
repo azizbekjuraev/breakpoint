@@ -10,11 +10,7 @@ function Row({ label }: { label: string }) {
   return (
     <li>
       <span>{label}: </span>
-      <input
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder="add a note"
-      />
+      <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="add a note" />
     </li>
   );
 }

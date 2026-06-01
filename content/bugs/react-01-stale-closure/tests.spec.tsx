@@ -25,6 +25,6 @@ test('title updates to "Count: 3" after three clicks', async () => {
   assert.equal(
     document.title,
     'Count: 3',
-    'Title did not update — the effect must re-run when count changes'
+    'Title did not update — the effect must re-run when count changes',
   );
 });

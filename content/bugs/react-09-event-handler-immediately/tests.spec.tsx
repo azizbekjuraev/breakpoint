@@ -11,7 +11,7 @@ test('clicking "Log click" logs once per click', async () => {
   const logs = getLogs();
   assert.ok(
     logs.includes('button clicked'),
-    'Click produced no log — onClick={logClick()} calls logClick during render and passes its return value (undefined) to onClick'
+    'Click produced no log — onClick={logClick()} calls logClick during render and passes its return value (undefined) to onClick',
   );
 });
 
@@ -26,6 +26,6 @@ test('re-rendering does not log without a click', async () => {
   const logs = getLogs();
   assert.ok(
     !logs.includes('button clicked'),
-    'A re-render produced a "button clicked" log — logClick is being called on every render instead of on click'
+    'A re-render produced a "button clicked" log — logClick is being called on every render instead of on click',
   );
 });

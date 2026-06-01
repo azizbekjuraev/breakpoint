@@ -3,10 +3,7 @@ import Layout from '@/components/astro/Layout.astro';
 import { getBugsByTrack } from '@/lib/bugs';
 
 export function getStaticPaths() {
-  return [
-    { params: { track: 'js' } },
-    { params: { track: 'react' } },
-  ];
+  return [{ params: { track: 'js' } }, { params: { track: 'react' } }];
 }
 
 const { track } = Astro.params;
@@ -16,43 +13,58 @@ if (track !== 'js' && track !== 'react') {
 
 const bugs = getBugsByTrack(track);
 const trackTitle = track === 'js' ? 'JavaScript' : 'React';
-const trackDescription = track === 'js'
-  ? 'Scope, closures, async, types. Pure language fundamentals.'
-  : 'Hooks, state, effects, reconciliation. Assumes JS comfort.';
+const trackDescription =
+  track === 'js'
+    ? 'Scope, closures, async, types. Pure language fundamentals.'
+    : 'Hooks, state, effects, reconciliation. Assumes JS comfort.';
 ---
+
 <Layout title={`${trackTitle} — Breakpoint`}>
   <main class="mx-auto max-w-3xl px-6 py-16">
-    <a href="/tracks" class="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100">← Tracks</a>
-    <h1 class="text-3xl font-semibold mt-6 mb-2">{trackTitle}</h1>
-    <p class="text-neutral-500 mb-6">{trackDescription}</p>
-    <p id="track-summary" class="text-sm text-neutral-500 mb-8 font-mono">
-      {bugs.length} {bugs.length === 1 ? 'bug' : 'bugs'}
+    <a
+      href="/tracks"
+      class="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100"
+      >← Tracks</a
+    >
+    <h1 class="mb-2 mt-6 text-3xl font-semibold">{trackTitle}</h1>
+    <p class="mb-6 text-neutral-500">{trackDescription}</p>
+    <p id="track-summary" class="mb-8 font-mono text-sm text-neutral-500">
+      {bugs.length}
+      {bugs.length === 1 ? 'bug' : 'bugs'}
     </p>
 
-    {bugs.length === 0 ? (
-      <p class="text-neutral-500 italic">No bugs in this track yet.</p>
-    ) : (
-      <ol class="space-y-2">
-        {bugs.map((bug) => (
-          <li>
-            <a
-              href={`/bugs/${bug.meta.id}`}
-              data-bug-id={bug.meta.id}
-              class="flex items-center justify-between gap-4 p-4 rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition"
-            >
-              <div class="min-w-0">
-                <p class="font-mono text-xs text-neutral-500">{bug.meta.id}</p>
-                <p class="font-medium truncate">{bug.meta.title}</p>
-              </div>
-              <div class="shrink-0 flex items-center gap-3 text-xs">
-                <span class="text-neutral-500">~{bug.meta.estimatedMinutes}m</span>
-                <span data-check class="hidden text-emerald-600 dark:text-emerald-400 font-semibold" aria-label="Completed">✓</span>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ol>
-    )}
+    {
+      bugs.length === 0 ? (
+        <p class="italic text-neutral-500">No bugs in this track yet.</p>
+      ) : (
+        <ol class="space-y-2">
+          {bugs.map((bug) => (
+            <li>
+              <a
+                href={`/bugs/${bug.meta.id}`}
+                data-bug-id={bug.meta.id}
+                class="flex items-center justify-between gap-4 rounded-md border border-neutral-200 p-4 transition hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
+              >
+                <div class="min-w-0">
+                  <p class="font-mono text-xs text-neutral-500">{bug.meta.id}</p>
+                  <p class="truncate font-medium">{bug.meta.title}</p>
+                </div>
+                <div class="flex shrink-0 items-center gap-3 text-xs">
+                  <span class="text-neutral-500">~{bug.meta.estimatedMinutes}m</span>
+                  <span
+                    data-check
+                    class="hidden font-semibold text-emerald-600 dark:text-emerald-400"
+                    aria-label="Completed"
+                  >
+                    ✓
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )
+    }
   </main>
   <script is:inline>
     (() => {
@@ -75,7 +87,9 @@ const trackDescription = track === 'js'
         if (summary && items.length > 0) {
           summary.textContent = count + ' / ' + items.length + ' completed';
         }
-      } catch (e) {}
+      } catch {
+        // Ignore progress loading errors
+      }
     })();
   </script>
 </Layout>

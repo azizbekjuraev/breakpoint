@@ -4,4 +4,4 @@
 
 ## Hint 2
 
-React compares the new state to the old state using `Object.is` (essentially `===`). If the reference is unchanged, React skips the re-render. `items.push(...)` mutates the existing array, so `setItems(items)` passes the same reference React already has. To trigger an update, create a *new* array: `setItems([...items, 'Cherry'])` (or use `.concat`).
+React compares the new state to the old state using `Object.is` (essentially `===`). If the reference is unchanged, React skips the re-render. `items.push(...)` mutates the existing array, so `setItems(items)` passes the same reference React already has. To trigger an update, create a _new_ array: `setItems([...items, 'Cherry'])` (or use `.concat`).

@@ -10,11 +10,7 @@ export default function App() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Your name"
-      />
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
       <button type="submit">Submit</button>
       {submitted && <p>Submitted: {submitted}</p>}
     </form>

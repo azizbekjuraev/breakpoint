@@ -11,7 +11,7 @@ test('setTimeout callback logs count: 3', async () => {
   assert.equal(
     logs[2],
     'count: 3',
-    'Expected count: 3 after setTimeout — the method must keep its binding to counter'
+    'Expected count: 3 after setTimeout — the method must keep its binding to counter',
   );
 });
 
@@ -20,6 +20,6 @@ test('no NaN appears in the logs', async () => {
   const logs = getLogs();
   assert.ok(
     !logs.some((l) => l.includes('NaN')),
-    '"this" was lost — the function ran without counter as its context'
+    '"this" was lost — the function ran without counter as its context',
   );
 });

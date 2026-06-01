@@ -1,6 +1,6 @@
 # An async function returns a Promise, not its value
 
-Every `async` function returns a Promise. Even if the function body returns a plain value, the function *call* gives you back a Promise that resolves to that value.
+Every `async` function returns a Promise. Even if the function body returns a plain value, the function _call_ gives you back a Promise that resolves to that value.
 
 ```
 async function get() { return 42; }
@@ -19,4 +19,4 @@ A few useful rules:
 - TypeScript catches most of these at compile time — the return type of an async function is `Promise<T>`, not `T`.
 - Linters (`eslint-plugin-no-floating-promises`) catch un-awaited promises.
 
-**The lesson**: `async` means the function *might* take time. `await` is how you wait for the actual value. Forget it, and you get the wrapper, not the contents.
+**The lesson**: `async` means the function _might_ take time. `await` is how you wait for the actual value. Forget it, and you get the wrapper, not the contents.

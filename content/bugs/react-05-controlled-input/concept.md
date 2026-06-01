@@ -1,10 +1,10 @@
 # Controlled inputs need both `value` and `onChange`
 
-In React, a form input can be *controlled* (React owns its value via state) or *uncontrolled* (the DOM owns its value). Mixing the two creates this exact bug.
+In React, a form input can be _controlled_ (React owns its value via state) or _uncontrolled_ (the DOM owns its value). Mixing the two creates this exact bug.
 
 When you set `value={state}`, React forces the input to display whatever `state` is on every render. The user types — the DOM briefly shows the new character — but on the next render, React resets the input's `value` back to `state`. If `state` never updates, the input appears frozen.
 
-To make it controlled correctly, you need both halves: `value` (read) *and* `onChange` (write). The handler reads the new value from the event and updates state. The next render shows the new state.
+To make it controlled correctly, you need both halves: `value` (read) _and_ `onChange` (write). The handler reads the new value from the event and updates state. The next render shows the new state.
 
 ```
 <input

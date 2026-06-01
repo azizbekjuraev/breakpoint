@@ -19,11 +19,11 @@ test('typing in a row stays with that row when a new item is added to the front'
   assert.equal(
     newInputs[2].value,
     'hello',
-    'B\\'s input lost its value — using array index as the key makes state stick to position instead of moving with the item'
+    "B's input lost its value — using array index as the key makes state stick to position instead of moving with the item",
   );
   assert.equal(
     newInputs[1].value,
     '',
-    'A\\'s input picked up B\\'s value — state should belong to the item, not the position'
+    "A's input picked up B's value — state should belong to the item, not the position",
   );
 });

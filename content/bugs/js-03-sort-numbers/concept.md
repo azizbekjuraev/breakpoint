@@ -17,6 +17,6 @@ For ascending numeric: `arr.sort((a, b) => a - b)`. For descending: `arr.sort((a
 
 The same applies to dates (compare `getTime()`), case-insensitive strings, or any custom ordering — `sort` doesn't know what "order" means for your data. You tell it.
 
-Also worth knowing: `sort` mutates the array in place *and* returns it. If you need to keep the original, copy first: `[...arr].sort(...)` or use the newer `arr.toSorted(...)`.
+Also worth knowing: `sort` mutates the array in place _and_ returns it. If you need to keep the original, copy first: `[...arr].sort(...)` or use the newer `arr.toSorted(...)`.
 
 **The lesson**: `sort` doesn't infer how to compare your data. Always pass a comparator unless you genuinely want lexicographic string ordering.

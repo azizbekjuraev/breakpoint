@@ -15,6 +15,12 @@ pnpm dev
 
 Open http://localhost:4321.
 
+## Architecture & Contribution
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md) — How the engine works
+- [CONTRIBUTING.md](./CONTRIBUTING.md) — Bug-folder spec & contribution guide
+- [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) — Community standards
+
 ## Authoring a bug
 
 ```bash

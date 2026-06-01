@@ -6,11 +6,14 @@ import { getBugsByTrack } from '@/lib/bugs';
 const jsBugs = getBugsByTrack('js');
 const reactBugs = getBugsByTrack('react');
 ---
+
 <Layout title="Tracks — Breakpoint">
   <main class="mx-auto max-w-3xl px-6 py-16">
-    <a href="/" class="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100">← Home</a>
-    <h1 class="text-3xl font-semibold mt-6 mb-2">Choose your track</h1>
-    <p class="text-neutral-500 mb-10">Two paths. Start where you are.</p>
+    <a href="/" class="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100"
+      >← Home</a
+    >
+    <h1 class="mb-2 mt-6 text-3xl font-semibold">Choose your track</h1>
+    <p class="mb-10 text-neutral-500">Two paths. Start where you are.</p>
     <div class="grid gap-4 sm:grid-cols-2">
       <TrackCard
         track="js"
@@ -39,7 +42,9 @@ const reactBugs = getBugsByTrack('react');
           const count = ids.filter((id) => done.has(id)).length;
           el.textContent = count + ' / ' + ids.length;
         });
-      } catch (e) {}
+      } catch {
+        // Ignore progress loading errors
+      }
     })();
   </script>
 </Layout>

@@ -1,12 +1,12 @@
 # `onClick={fn}` passes the function; `onClick={fn()}` calls it immediately
 
-This bug is so common it has a name: "the parentheses trap." React event handlers expect a function value — a reference to *something callable later*, when the event happens. Adding `()` calls the function during render, before any click has occurred.
+This bug is so common it has a name: "the parentheses trap." React event handlers expect a function value — a reference to _something callable later_, when the event happens. Adding `()` calls the function during render, before any click has occurred.
 
 The symptoms:
 
 - The handler runs once on mount (during the first render).
 - It runs again on every re-render (during each subsequent render's evaluation).
-- Clicking the button does nothing, because what was actually assigned to `onClick` is the function's *return value* — usually `undefined`.
+- Clicking the button does nothing, because what was actually assigned to `onClick` is the function's _return value_ — usually `undefined`.
 
 The fix is to drop the parentheses:
 

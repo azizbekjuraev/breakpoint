@@ -12,6 +12,6 @@ test('typing in the input updates the greeting', async () => {
 
   assert.ok(
     screen.queryByText('Hello, Alice'),
-    'The greeting did not update — when `value` is bound to state, you also need `onChange` to write back to state'
+    'The greeting did not update — when `value` is bound to state, you also need `onChange` to write back to state',
   );
 });
