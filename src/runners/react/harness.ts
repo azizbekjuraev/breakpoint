@@ -75,24 +75,20 @@ window.render = (element) => {
   root.render(element);
 };
 
-function getAllTextNodes() {
-  if (!container) return [];
-  const nodes = [];
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
-  let node;
-  while ((node = walker.nextNode())) nodes.push(node);
-  return nodes;
-}
-
 function matches(content, text) {
-  if (typeof text === 'string') return content.indexOf(text) !== -1;
+  if (typeof text === 'string') return content.trim() === text.trim();
   return text.test(content);
 }
 
 const screenImpl = {
   queryByText: (text) => {
-    for (const node of getAllTextNodes()) {
-      if (matches(node.textContent || '', text)) return node.parentElement;
+    if (!container) return null;
+    for (const el of container.querySelectorAll('*')) {
+      const directText = Array.from(el.childNodes)
+        .filter((n) => n.nodeType === 3)
+        .map((n) => n.textContent || '')
+        .join('');
+      if (directText.trim() && matches(directText.trim(), text)) return el;
     }
     return null;
   },
