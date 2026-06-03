@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
+import { vim } from '@replit/codemirror-vim';
 import { EditorState } from '@codemirror/state';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
@@ -8,9 +9,10 @@ interface Props {
   value: string;
   onChange: (next: string) => void;
   language?: 'js' | 'jsx';
+  vimMode?: boolean;
 }
 
-export default function Editor({ value, onChange, language = 'js' }: Props) {
+export default function Editor({ value, onChange, language = 'js', vimMode = false }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
 
@@ -20,6 +22,7 @@ export default function Editor({ value, onChange, language = 'js' }: Props) {
     const state = EditorState.create({
       doc: value,
       extensions: [
+        ...(vimMode ? [vim()] : []),
         basicSetup,
         javascript({ jsx: language === 'jsx', typescript: language === 'jsx' }),
         oneDark,
@@ -40,7 +43,7 @@ export default function Editor({ value, onChange, language = 'js' }: Props) {
       viewRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
+  }, [language, vimMode]);
 
   return <div ref={hostRef} className="h-full" />;
 }

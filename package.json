@@ -23,6 +23,7 @@
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.36.0",
     "@codesandbox/sandpack-react": "^2.19.10",
+    "@replit/codemirror-vim": "^6.3.0",
     "astro": "^5.1.0",
     "codemirror": "^6.0.1",
     "react": "^19.0.0",

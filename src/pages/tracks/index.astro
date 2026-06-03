@@ -29,8 +29,8 @@ const reactBugs = getBugsByTrack('react');
       />
     </div>
   </main>
-  <script is:inline>
-    (() => {
+  <script>
+    function updateProgress() {
       const KEY = 'breakpoint:progress:v1';
       try {
         const raw = localStorage.getItem(KEY);
@@ -42,8 +42,9 @@ const reactBugs = getBugsByTrack('react');
           const count = ids.filter((id) => done.has(id)).length;
           el.textContent = count + ' / ' + ids.length;
         });
-      } catch {
-      }
-    })();
+      } catch {}
+    }
+
+    document.addEventListener('astro:page-load', updateProgress);
   </script>
 </Layout>

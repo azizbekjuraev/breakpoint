@@ -66,8 +66,8 @@ const trackDescription =
       )
     }
   </main>
-  <script is:inline>
-    (() => {
+  <script>
+    function updateProgress() {
       const KEY = 'breakpoint:progress:v1';
       try {
         const raw = localStorage.getItem(KEY);
@@ -87,8 +87,9 @@ const trackDescription =
         if (summary && items.length > 0) {
           summary.textContent = count + ' / ' + items.length + ' completed';
         }
-      } catch {
-      }
-    })();
+      } catch {}
+    }
+
+    document.addEventListener('astro:page-load', updateProgress);
   </script>
 </Layout>

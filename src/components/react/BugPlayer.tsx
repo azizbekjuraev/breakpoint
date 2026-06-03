@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, lazy, Suspense, useCallback } from 'react';
+import { useState, useMemo, useEffect, useRef, lazy, Suspense, useCallback } from 'react';
 import type { Bug, RunResult, Track } from '@/lib/types';
 import Editor from './Editor';
 import HintPanel from './HintPanel';
@@ -7,6 +7,19 @@ import TestResults from './TestResults';
 import { markCompleted, isCompleted, saveCode, getSavedCode, clearSavedCode } from '@/lib/progress';
 import { useHintState } from '@/lib/hint-state';
 import { renderMarkdown } from '@/lib/markdown';
+
+const EDITOR_STORAGE_KEY = 'breakpoint:editor';
+
+function readEditorPrefs(): { vimMode: boolean } {
+  try {
+    const raw = localStorage.getItem(EDITOR_STORAGE_KEY);
+    if (raw) {
+      const p = JSON.parse(raw);
+      if (typeof p.vimMode === 'boolean') return p;
+    }
+  } catch {}
+  return { vimMode: false };
+}
 
 const JsRunner = lazy(() => import('@/runners/js/JsRunner'));
 const ReactRunner = lazy(() => import('@/runners/react/ReactRunner'));
@@ -39,6 +52,9 @@ export default function BugPlayer({ bug, nav }: Props) {
   const [running, setRunning] = useState(false);
   const [completedBefore, setCompletedBefore] = useState<boolean>(() => isCompleted(bug.meta.id));
   const hintState = useHintState(bug.meta.id, bug.files.hints.length);
+  const [vimMode, setVimMode] = useState(() => readEditorPrefs().vimMode);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const settingsRef = useRef<HTMLDivElement>(null);
 
   const language = firstFile.endsWith('.tsx') || firstFile.endsWith('.jsx') ? 'jsx' : 'js';
 
@@ -48,6 +64,23 @@ export default function BugPlayer({ bug, nav }: Props) {
     }, 500);
     return () => clearTimeout(timer);
   }, [code, bug.meta.id]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(EDITOR_STORAGE_KEY, JSON.stringify({ vimMode }));
+    } catch {}
+  }, [vimMode]);
+
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+        setSettingsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [settingsOpen]);
 
   const handleResult = useCallback(
     (r: RunResult) => {
@@ -96,6 +129,60 @@ export default function BugPlayer({ bug, nav }: Props) {
             <h1 className="truncate text-lg font-semibold">{bug.meta.title}</h1>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            <div ref={settingsRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setSettingsOpen((o) => !o)}
+                aria-label="Editor settings"
+                className={`rounded-md px-2.5 py-2 transition ${
+                  settingsOpen
+                    ? 'text-neutral-900 dark:text-neutral-100'
+                    : 'text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
+                }`}
+              >
+                <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 110-5.86 2.929 2.929 0 010 5.858z" />
+                </svg>
+              </button>
+              {settingsOpen && (
+                <div className="absolute right-0 top-full z-40 mt-1 w-52 rounded-xl border border-neutral-200 bg-white/95 shadow-xl backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-900/95">
+                  <div className="p-4">
+                    <p className="mb-3 font-mono text-[11px] text-neutral-400">editor settings</p>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm text-neutral-700 dark:text-neutral-300">Vim mode</span>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={vimMode}
+                        onClick={() => setVimMode((v) => !v)}
+                        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
+                          vimMode
+                            ? 'bg-neutral-900 dark:bg-white'
+                            : 'bg-neutral-200 dark:bg-neutral-700'
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 rounded-full shadow transition-transform ${vimMode ? 'bg-neutral-300 dark:bg-neutral-600' : 'bg-white dark:bg-neutral-200'}`}
+                          style={{ transform: vimMode ? 'translateX(18px)' : 'translateX(2px)' }}
+                        />
+                      </button>
+                    </div>
+                    {vimMode && (
+                      <p className="mt-2 font-mono text-[10px] text-neutral-400 dark:text-neutral-600">
+                        <kbd className="rounded bg-neutral-100 px-1 py-0.5 font-mono dark:bg-neutral-800">
+                          i
+                        </kbd>{' '}
+                        to type ·{' '}
+                        <kbd className="rounded bg-neutral-100 px-1 py-0.5 font-mono dark:bg-neutral-800">
+                          Esc
+                        </kbd>{' '}
+                        for normal mode
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
             <button
               type="button"
               onClick={handleReset}
@@ -117,7 +204,7 @@ export default function BugPlayer({ bug, nav }: Props) {
         </header>
 
         <div className="min-h-0 flex-1">
-          <Editor key={editorKey} value={code} onChange={setCode} language={language} />
+          <Editor key={editorKey} value={code} onChange={setCode} language={language} vimMode={vimMode} />
         </div>
       </div>
 
