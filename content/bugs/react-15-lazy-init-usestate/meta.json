@@ -1,0 +1,10 @@
+{
+  "id": "react-15-lazy-init-usestate",
+  "track": "react",
+  "title": "Initializer runs on every render",
+  "difficulty": 3,
+  "concepts": ["useState", "lazy-initialization", "performance"],
+  "prereqs": [],
+  "estimatedMinutes": 7,
+  "runner": "react-sandpack"
+}

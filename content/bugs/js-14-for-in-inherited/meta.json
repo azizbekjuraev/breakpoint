@@ -1,0 +1,10 @@
+{
+  "id": "js-14-for-in-inherited",
+  "track": "js",
+  "title": "User settings include keys we never set",
+  "difficulty": 3,
+  "concepts": ["for-in", "prototypes", "own-properties"],
+  "prereqs": [],
+  "estimatedMinutes": 7,
+  "runner": "js-iframe"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "react-14-object-dep-identity",
+  "track": "react",
+  "title": "Effect re-runs on every parent render",
+  "difficulty": 3,
+  "concepts": ["useEffect", "dependency-array", "referential-equality", "useMemo"],
+  "prereqs": ["react-01-stale-closure"],
+  "estimatedMinutes": 9,
+  "runner": "react-sandpack"
+}

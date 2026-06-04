@@ -15,7 +15,18 @@
       "Bash(pnpm dev *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/)",
       "Bash(rtk tsc *)",
-      "Bash(rtk git *)"
+      "Bash(rtk git *)",
+      "Bash(pnpm astro *)",
+      "Bash(pnpm tsx *)",
+      "Bash(node *)",
+      "Bash(rtk proxy *)",
+      "Bash(awk *)",
+      "Bash(npm install *)",
+      "Bash(perl -e 'alarm 30; exec @ARGV' node verify.mjs)",
+      "Bash(pnpm validate-bugs *)",
+      "Bash(pnpm check *)",
+      "Bash(rtk lint *)",
+      "Bash(pnpm build *)"
     ]
   }
 }

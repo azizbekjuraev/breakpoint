@@ -1,0 +1,10 @@
+{
+  "id": "react-13-event-listener-leak",
+  "track": "react",
+  "title": "One ping increments the counter by 3",
+  "difficulty": 3,
+  "concepts": ["useEffect", "cleanup", "event-listeners", "memory-leaks"],
+  "prereqs": ["js-10-event-cleanup"],
+  "estimatedMinutes": 9,
+  "runner": "react-sandpack"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "react-12-stale-closure-interval",
+  "track": "react",
+  "title": "Counter ticks once then freezes at 1",
+  "difficulty": 3,
+  "concepts": ["useEffect", "stale-closure", "functional-updates", "intervals"],
+  "prereqs": ["react-01-stale-closure"],
+  "estimatedMinutes": 8,
+  "runner": "react-sandpack"
+}

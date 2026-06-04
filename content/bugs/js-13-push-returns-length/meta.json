@@ -1,0 +1,10 @@
+{
+  "id": "js-13-push-returns-length",
+  "track": "js",
+  "title": "groupBy crashes with 'push is not a function'",
+  "difficulty": 3,
+  "concepts": ["reduce", "array-methods", "return-values"],
+  "prereqs": [],
+  "estimatedMinutes": 7,
+  "runner": "js-iframe"
+}

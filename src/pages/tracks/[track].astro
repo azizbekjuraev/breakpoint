@@ -1,6 +1,8 @@
 ---
 import Layout from '@/components/astro/Layout.astro';
+import LevelCard from '@/components/astro/LevelCard.astro';
 import { getBugsByTrack } from '@/lib/bugs';
+import { LEVELS } from '@/lib/levels';
 
 export function getStaticPaths() {
   return [{ params: { track: 'js' } }, { params: { track: 'react' } }];
@@ -17,6 +19,11 @@ const trackDescription =
   track === 'js'
     ? 'Scope, closures, async, types. Pure language fundamentals.'
     : 'Hooks, state, effects, reconciliation. Assumes JS comfort.';
+
+const levels = LEVELS.map((l) => ({
+  ...l,
+  bugIds: bugs.filter((b) => b.meta.difficulty === l.difficulty).map((b) => b.meta.id),
+}));
 ---
 
 <Layout title={`${trackTitle} — Breakpoint`}>
@@ -27,44 +34,20 @@ const trackDescription =
       >← Tracks</a
     >
     <h1 class="mb-2 mt-6 text-3xl font-semibold">{trackTitle}</h1>
-    <p class="mb-6 text-neutral-500">{trackDescription}</p>
-    <p id="track-summary" class="mb-8 font-mono text-sm text-neutral-500">
-      {bugs.length}
-      {bugs.length === 1 ? 'bug' : 'bugs'}
-    </p>
-
-    {
-      bugs.length === 0 ? (
-        <p class="italic text-neutral-500">No bugs in this track yet.</p>
-      ) : (
-        <ol class="space-y-2">
-          {bugs.map((bug) => (
-            <li>
-              <a
-                href={`/bugs/${bug.meta.id}`}
-                data-bug-id={bug.meta.id}
-                class="flex items-center justify-between gap-4 rounded-md border border-neutral-200 p-4 transition hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
-              >
-                <div class="min-w-0">
-                  <p class="font-mono text-xs text-neutral-500">{bug.meta.id}</p>
-                  <p class="truncate font-medium">{bug.meta.title}</p>
-                </div>
-                <div class="flex shrink-0 items-center gap-3 text-xs">
-                  <span class="text-neutral-500">~{bug.meta.estimatedMinutes}m</span>
-                  <span
-                    data-check
-                    class="hidden font-semibold text-emerald-600 dark:text-emerald-400"
-                    aria-label="Completed"
-                  >
-                    ✓
-                  </span>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ol>
-      )
-    }
+    <p class="mb-10 text-neutral-500">{trackDescription}</p>
+    <div class="grid gap-4 md:grid-cols-3">
+      {
+        levels.map((l) => (
+          <LevelCard
+            track={track}
+            slug={l.slug}
+            label={l.label}
+            blurb={l.blurb}
+            bugIds={l.bugIds}
+          />
+        ))
+      }
+    </div>
   </main>
   <script>
     function updateProgress() {
@@ -73,20 +56,12 @@ const trackDescription =
         const raw = localStorage.getItem(KEY);
         const data = raw ? JSON.parse(raw) : { completed: {} };
         const done = new Set(Object.keys(data.completed));
-        const items = document.querySelectorAll('a[data-bug-id]');
-        let count = 0;
-        items.forEach((item) => {
-          if (done.has(item.getAttribute('data-bug-id'))) {
-            count++;
-            item.setAttribute('data-completed', '');
-            const check = item.querySelector('[data-check]');
-            if (check) check.classList.remove('hidden');
-          }
+        document.querySelectorAll('[data-level-bugs]').forEach((el) => {
+          const ids = (el.getAttribute('data-level-bugs') || '').split(',').filter(Boolean);
+          if (ids.length === 0) return;
+          const count = ids.filter((id) => done.has(id)).length;
+          el.textContent = count + ' / ' + ids.length;
         });
-        const summary = document.getElementById('track-summary');
-        if (summary && items.length > 0) {
-          summary.textContent = count + ' / ' + items.length + ' completed';
-        }
       } catch {}
     }
 

@@ -1,0 +1,10 @@
+{
+  "id": "react-11-fetch-race-condition",
+  "track": "react",
+  "title": "Switching users fast displays the wrong one",
+  "difficulty": 3,
+  "concepts": ["useEffect", "race-conditions", "cleanup", "async"],
+  "prereqs": ["react-01-stale-closure", "js-06-missing-await"],
+  "estimatedMinutes": 10,
+  "runner": "react-sandpack"
+}

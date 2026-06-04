@@ -1,0 +1,10 @@
+{
+  "id": "js-12-foreach-async-no-await",
+  "track": "js",
+  "title": "processAll returns an empty array",
+  "difficulty": 3,
+  "concepts": ["async-await", "iteration", "promises"],
+  "prereqs": [],
+  "estimatedMinutes": 8,
+  "runner": "js-iframe"
+}

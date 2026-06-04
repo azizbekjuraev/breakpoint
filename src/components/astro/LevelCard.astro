@@ -1,0 +1,36 @@
+---
+import type { Track } from '@/lib/types';
+
+interface Props {
+  track: Track;
+  slug: string;
+  label: string;
+  blurb: string;
+  bugIds: string[];
+}
+
+const { track, slug, label, blurb, bugIds } = Astro.props;
+const count = bugIds.length;
+const disabled = count === 0;
+const href = disabled ? '#' : `/tracks/${track}/${slug}`;
+---
+
+<a
+  href={href}
+  class:list={[
+    'block rounded-lg border border-neutral-200 p-6 transition dark:border-neutral-800',
+    disabled
+      ? 'pointer-events-none opacity-50'
+      : 'hover:border-neutral-400 dark:hover:border-neutral-600',
+  ]}
+>
+  <div class="mb-2 flex items-baseline justify-between">
+    <h2 class="text-xl font-semibold">{label}</h2>
+    <span class="font-mono text-sm text-neutral-500" data-level-bugs={bugIds.join(',')}>
+      {count}
+      {count === 1 ? ' bug' : ' bugs'}
+    </span>
+  </div>
+  <p class="text-sm text-neutral-600 dark:text-neutral-400">{blurb}</p>
+  {disabled && <p class="mt-2 text-xs text-neutral-400">Coming soon</p>}
+</a>

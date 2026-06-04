@@ -16,6 +16,9 @@ export default tseslint.config(
         ...globals.node,
       },
     },
+    rules: {
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
   },
   {
     files: ['**/*.{jsx,tsx}'],

@@ -1,0 +1,10 @@
+{
+  "id": "js-11-prototype-shared-state",
+  "track": "js",
+  "title": "Two carts somehow share the same items",
+  "difficulty": 3,
+  "concepts": ["prototypes", "reference-types", "constructors"],
+  "prereqs": [],
+  "estimatedMinutes": 8,
+  "runner": "js-iframe"
+}

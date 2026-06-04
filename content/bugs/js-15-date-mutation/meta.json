@@ -1,0 +1,10 @@
+{
+  "id": "js-15-date-mutation",
+  "track": "js",
+  "title": "addMonth changes the original date too",
+  "difficulty": 3,
+  "concepts": ["dates", "mutation", "reference-types"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "js-iframe"
+}
