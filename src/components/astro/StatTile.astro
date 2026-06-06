@@ -1,0 +1,16 @@
+---
+interface Props {
+  label: string;
+  stat: string;
+}
+const { label, stat } = Astro.props;
+---
+
+<div
+  class="rounded-lg border border-neutral-200 px-4 py-3 dark:border-neutral-800"
+>
+  <p class="font-mono text-[11px] uppercase tracking-wide text-neutral-400">{label}</p>
+  <p class="mt-1 font-mono text-xl text-neutral-900 dark:text-neutral-100" data-stat={stat}>
+    —
+  </p>
+</div>

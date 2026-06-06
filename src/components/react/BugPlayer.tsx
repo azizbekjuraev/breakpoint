@@ -4,7 +4,15 @@ import Editor from './Editor';
 import HintPanel from './HintPanel';
 import ConceptCard from './ConceptCard';
 import TestResults from './TestResults';
-import { markCompleted, isCompleted, saveCode, getSavedCode, clearSavedCode } from '@/lib/progress';
+import {
+  markCompleted,
+  isCompleted,
+  saveCode,
+  getSavedCode,
+  clearSavedCode,
+  markEdited,
+  clearStart,
+} from '@/lib/progress';
 import { useHintState } from '@/lib/hint-state';
 import { renderMarkdown } from '@/lib/markdown';
 
@@ -64,12 +72,17 @@ export default function BugPlayer({ bug, nav }: Props) {
 
   const language = firstFile.endsWith('.tsx') || firstFile.endsWith('.jsx') ? 'jsx' : 'js';
 
+  const initialCodeRef = useRef(code);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       saveCode(bug.meta.id, code);
+      if (code !== starterCode && code !== initialCodeRef.current) {
+        markEdited(bug.meta.id, { title: bug.meta.title, track: bug.meta.track });
+      }
     }, 500);
     return () => clearTimeout(timer);
-  }, [code, bug.meta.id]);
+  }, [code, bug.meta.id, bug.meta.title, bug.meta.track, starterCode]);
 
   useEffect(() => {
     try {
@@ -103,6 +116,7 @@ export default function BugPlayer({ bug, nav }: Props) {
   const handleReset = useCallback(() => {
     setCode(starterCode);
     clearSavedCode(bug.meta.id);
+    clearStart(bug.meta.id);
     setResult(null);
     setCompletedBefore(false);
     setEditorKey((k) => k + 1);

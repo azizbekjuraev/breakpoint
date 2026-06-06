@@ -1,0 +1,23 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  description: string;
+}
+const { id, label, description } = Astro.props;
+---
+
+<div
+  class="group rounded-lg border border-dashed border-neutral-200 px-4 py-3 opacity-50 transition data-[earned=true]:border-solid data-[earned=true]:border-emerald-500/40 data-[earned=true]:bg-emerald-500/5 data-[earned=true]:opacity-100 dark:border-neutral-800"
+  data-badge={id}
+  data-earned="false"
+  title={description}
+>
+  <p class="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+    <span
+      class="mr-1 hidden font-semibold text-emerald-600 group-data-[earned=true]:inline dark:text-emerald-400"
+      aria-hidden="true">✓</span
+    >{label}
+  </p>
+  <p class="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">{description}</p>
+</div>

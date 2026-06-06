@@ -1,5 +1,7 @@
 ---
+import { getAllBugs } from '@/lib/bugs';
 
+const validBugIds = getAllBugs().map((b) => b.meta.id);
 ---
 
 <main class="mx-auto max-w-2xl px-6 py-24 sm:py-32">
@@ -11,6 +13,27 @@
     Small projects with real bugs. Find them, fix them, learn the underlying concept. No tutorials —
     just code that's broken and devtools that work.
   </p>
+
+  <a
+    id="resume-card"
+    href="#"
+    class="mb-8 hidden block max-w-md rounded-lg border border-neutral-200 px-4 py-3 transition hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
+  >
+    <div
+      class="mb-1 flex items-center justify-between font-mono text-[11px] uppercase tracking-wide text-neutral-400"
+    >
+      <span>resume</span>
+      <span data-resume-track>—</span>
+    </div>
+    <div class="flex items-center justify-between gap-3">
+      <span
+        class="min-w-0 truncate text-sm font-medium text-neutral-900 dark:text-neutral-100"
+        data-resume-title>—</span
+      >
+      <span class="shrink-0 text-neutral-400" aria-hidden="true">→</span>
+    </div>
+  </a>
+
   <div class="flex gap-3">
     <a
       href="/tracks"
@@ -26,3 +49,38 @@
     </a>
   </div>
 </main>
+
+<script
+  is:inline
+  type="application/json"
+  id="bp-valid-bug-ids"
+  set:html={JSON.stringify(validBugIds)}
+/>
+
+<script>
+  import { getProgress } from '@/lib/progress';
+  import { findResumeCandidate } from '@/lib/stats';
+
+  function hydrateResume() {
+    const card = document.getElementById('resume-card') as HTMLAnchorElement | null;
+    if (!card) return;
+    const idsNode = document.getElementById('bp-valid-bug-ids');
+    if (!idsNode?.textContent) return;
+
+    const validIds = new Set<string>(JSON.parse(idsNode.textContent));
+    const candidate = findResumeCandidate(getProgress(), (id) => validIds.has(id));
+    if (!candidate) {
+      card.classList.add('hidden');
+      return;
+    }
+
+    card.href = `/bugs/${candidate.bugId}`;
+    const titleEl = card.querySelector('[data-resume-title]');
+    const trackEl = card.querySelector('[data-resume-track]');
+    if (titleEl) titleEl.textContent = candidate.title;
+    if (trackEl) trackEl.textContent = candidate.track === 'js' ? 'JavaScript' : 'React';
+    card.classList.remove('hidden');
+  }
+
+  document.addEventListener('astro:page-load', hydrateResume);
+</script>

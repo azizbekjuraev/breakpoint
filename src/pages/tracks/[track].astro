@@ -1,8 +1,11 @@
 ---
 import Layout from '@/components/astro/Layout.astro';
 import LevelCard from '@/components/astro/LevelCard.astro';
+import StatTile from '@/components/astro/StatTile.astro';
+import Badge from '@/components/astro/Badge.astro';
 import { getBugsByTrack } from '@/lib/bugs';
 import { LEVELS } from '@/lib/levels';
+import { getAchievementDefs } from '@/lib/achievements';
 
 export function getStaticPaths() {
   return [{ params: { track: 'js' } }, { params: { track: 'react' } }];
@@ -14,6 +17,7 @@ if (track !== 'js' && track !== 'react') {
 }
 
 const bugs = getBugsByTrack(track);
+const trackBugIds = bugs.map((b) => b.meta.id);
 const trackTitle = track === 'js' ? 'JavaScript' : 'React';
 const trackDescription =
   track === 'js'
@@ -24,6 +28,8 @@ const levels = LEVELS.map((l) => ({
   ...l,
   bugIds: bugs.filter((b) => b.meta.difficulty === l.difficulty).map((b) => b.meta.id),
 }));
+
+const achievementDefs = getAchievementDefs(track);
 ---
 
 <Layout title={`${trackTitle} — Breakpoint`}>
@@ -35,6 +41,14 @@ const levels = LEVELS.map((l) => ({
     >
     <h1 class="mb-2 mt-6 text-3xl font-semibold">{trackTitle}</h1>
     <p class="mb-10 text-neutral-500">{trackDescription}</p>
+
+    <section class="mb-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <StatTile label="Solved" stat="solved" />
+      <StatTile label="Streak" stat="streak" />
+      <StatTile label="Avg hints" stat="avg-hints" />
+      <StatTile label="Avg time" stat="avg-time" />
+    </section>
+
     <div class="grid gap-4 md:grid-cols-3">
       {
         levels.map((l) => (
@@ -48,23 +62,76 @@ const levels = LEVELS.map((l) => ({
         ))
       }
     </div>
+
+    <h2
+      class="mb-4 mt-14 font-mono text-[11px] uppercase tracking-wide text-neutral-400"
+    >
+      Achievements
+    </h2>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        achievementDefs.map((a) => (
+          <Badge id={a.id} label={a.label} description={a.description} />
+        ))
+      }
+    </div>
   </main>
+
+  <script
+    is:inline
+    type="application/json"
+    id="bp-track-data"
+    set:html={JSON.stringify({ track, trackBugIds })}
+  />
+
   <script>
-    function updateProgress() {
-      const KEY = 'breakpoint:progress:v1';
-      try {
-        const raw = localStorage.getItem(KEY);
-        const data = raw ? JSON.parse(raw) : { completed: {} };
-        const done = new Set(Object.keys(data.completed));
-        document.querySelectorAll('[data-level-bugs]').forEach((el) => {
-          const ids = (el.getAttribute('data-level-bugs') || '').split(',').filter(Boolean);
-          if (ids.length === 0) return;
-          const count = ids.filter((id) => done.has(id)).length;
-          el.textContent = count + ' / ' + ids.length;
-        });
-      } catch {}
+    import { getProgress } from '@/lib/progress';
+    import { computeTrackStats, formatDuration } from '@/lib/stats';
+    import { computeTrackAchievements } from '@/lib/achievements';
+    import type { Track } from '@/lib/types';
+
+    function hydrate() {
+      const dataNode = document.getElementById('bp-track-data');
+      if (!dataNode?.textContent) return;
+      const { track, trackBugIds } = JSON.parse(dataNode.textContent) as {
+        track: Track;
+        trackBugIds: string[];
+      };
+
+      const progress = getProgress();
+      const stats = computeTrackStats(progress, trackBugIds);
+      const achievements = computeTrackAchievements({
+        track,
+        trackBugIds,
+        data: progress,
+      });
+
+      const setStat = (key: string, value: string) => {
+        const el = document.querySelector(`[data-stat="${key}"]`);
+        if (el) el.textContent = value;
+      };
+      setStat('solved', `${stats.solved} / ${stats.total}`);
+      setStat('streak', stats.streak === 0 ? '—' : `${stats.streak}d`);
+      setStat('avg-hints', stats.avgHints === null ? '—' : stats.avgHints.toFixed(1));
+      setStat(
+        'avg-time',
+        stats.avgDurationMs === null ? '—' : formatDuration(stats.avgDurationMs),
+      );
+
+      for (const a of achievements) {
+        const el = document.querySelector(`[data-badge="${a.id}"]`);
+        if (el) el.setAttribute('data-earned', String(a.earned));
+      }
+
+      const done = new Set(Object.keys(progress.completed));
+      document.querySelectorAll('[data-level-bugs]').forEach((el) => {
+        const ids = (el.getAttribute('data-level-bugs') || '').split(',').filter(Boolean);
+        if (ids.length === 0) return;
+        const count = ids.filter((id) => done.has(id)).length;
+        el.textContent = `${count} / ${ids.length}`;
+      });
     }
 
-    document.addEventListener('astro:page-load', updateProgress);
+    document.addEventListener('astro:page-load', hydrate);
   </script>
 </Layout>

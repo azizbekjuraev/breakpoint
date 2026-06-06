@@ -72,28 +72,25 @@ const trackTitle = track === 'js' ? 'JavaScript' : 'React';
     }
   </main>
   <script>
+    import { getProgress } from '@/lib/progress';
+
     function updateProgress() {
-      const KEY = 'breakpoint:progress:v1';
-      try {
-        const raw = localStorage.getItem(KEY);
-        const data = raw ? JSON.parse(raw) : { completed: {} };
-        const done = new Set(Object.keys(data.completed));
-        const items = document.querySelectorAll('a[data-bug-id]');
-        let count = 0;
-        items.forEach((item) => {
-          const id = item.getAttribute('data-bug-id');
-          if (id && done.has(id)) {
-            count++;
-            item.setAttribute('data-completed', '');
-            const check = item.querySelector('[data-check]');
-            if (check) check.classList.remove('hidden');
-          }
-        });
-        const summary = document.getElementById('track-summary');
-        if (summary && items.length > 0) {
-          summary.textContent = count + ' / ' + items.length + ' completed';
+      const done = new Set(Object.keys(getProgress().completed));
+      const items = document.querySelectorAll('a[data-bug-id]');
+      let count = 0;
+      items.forEach((item) => {
+        const id = item.getAttribute('data-bug-id');
+        if (id && done.has(id)) {
+          count++;
+          item.setAttribute('data-completed', '');
+          const check = item.querySelector('[data-check]');
+          if (check) check.classList.remove('hidden');
         }
-      } catch {}
+      });
+      const summary = document.getElementById('track-summary');
+      if (summary && items.length > 0) {
+        summary.textContent = `${count} / ${items.length} completed`;
+      }
     }
 
     document.addEventListener('astro:page-load', updateProgress);

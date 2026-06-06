@@ -30,19 +30,16 @@ const reactBugs = getBugsByTrack('react');
     </div>
   </main>
   <script>
+    import { getProgress } from '@/lib/progress';
+
     function updateProgress() {
-      const KEY = 'breakpoint:progress:v1';
-      try {
-        const raw = localStorage.getItem(KEY);
-        const data = raw ? JSON.parse(raw) : { completed: {} };
-        const done = new Set(Object.keys(data.completed));
-        document.querySelectorAll('[data-track-bugs]').forEach((el) => {
-          const ids = (el.getAttribute('data-track-bugs') || '').split(',').filter(Boolean);
-          if (ids.length === 0) return;
-          const count = ids.filter((id) => done.has(id)).length;
-          el.textContent = count + ' / ' + ids.length;
-        });
-      } catch {}
+      const done = new Set(Object.keys(getProgress().completed));
+      document.querySelectorAll('[data-track-bugs]').forEach((el) => {
+        const ids = (el.getAttribute('data-track-bugs') || '').split(',').filter(Boolean);
+        if (ids.length === 0) return;
+        const count = ids.filter((id) => done.has(id)).length;
+        el.textContent = `${count} / ${ids.length}`;
+      });
     }
 
     document.addEventListener('astro:page-load', updateProgress);
