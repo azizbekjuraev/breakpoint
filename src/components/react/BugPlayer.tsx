@@ -169,7 +169,9 @@ export default function BugPlayer({ bug, nav }: Props) {
                   <div className="p-4">
                     <p className="mb-3 font-mono text-[11px] text-neutral-400">editor settings</p>
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm text-neutral-700 dark:text-neutral-300">Vim mode</span>
+                      <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                        Vim mode
+                      </span>
                       <button
                         type="button"
                         role="switch"
@@ -217,7 +219,9 @@ export default function BugPlayer({ bug, nav }: Props) {
                         >
                           <span
                             className={`inline-block h-4 w-4 rounded-full shadow transition-transform ${showPreview ? 'bg-neutral-300 dark:bg-neutral-600' : 'bg-white dark:bg-neutral-200'}`}
-                            style={{ transform: showPreview ? 'translateX(18px)' : 'translateX(2px)' }}
+                            style={{
+                              transform: showPreview ? 'translateX(18px)' : 'translateX(2px)',
+                            }}
                           />
                         </button>
                       </div>
@@ -247,7 +251,13 @@ export default function BugPlayer({ bug, nav }: Props) {
         </header>
 
         <div className="min-h-0 flex-1">
-          <Editor key={editorKey} value={code} onChange={setCode} language={language} vimMode={vimMode} />
+          <Editor
+            key={editorKey}
+            value={code}
+            onChange={setCode}
+            language={language}
+            vimMode={vimMode}
+          />
         </div>
       </div>
 
@@ -264,7 +274,11 @@ export default function BugPlayer({ bug, nav }: Props) {
         {isReact && showPreview && (
           <div className="border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
             <p className="mb-3 font-mono text-[11px] text-neutral-400">live preview</p>
-            <Suspense fallback={<div className="h-[220px] animate-pulse rounded-lg bg-neutral-100 dark:bg-neutral-800" />}>
+            <Suspense
+              fallback={
+                <div className="h-[220px] animate-pulse rounded-lg bg-neutral-100 dark:bg-neutral-800" />
+              }
+            >
               <LivePreview files={{ ...bug.files.starter, [firstFile]: code }} />
             </Suspense>
           </div>
@@ -295,7 +309,7 @@ export default function BugPlayer({ bug, nav }: Props) {
                 href={`/bugs/${nav.next.id}`}
                 className="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
               >
-                Next: {nav.next.title} →
+                Next →
               </a>
             ) : (
               <a
