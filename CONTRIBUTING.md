@@ -13,16 +13,29 @@ For UI bugs, typos, styling, or anything in `src/` — follow these steps:
 
 For anything beyond a tiny fix, open an issue describing what's broken so we can confirm the approach before you spend time on a PR. Use the **Bug report** template in [.github/ISSUE_TEMPLATE](./.github/ISSUE_TEMPLATE).
 
-### 2. Fork and clone
+### 2. Fork the repository
+
+Go to <https://github.com/azizbekjuraev/breakpoint> and click the **Fork** button in the top-right. This creates your own copy of the repo at `https://github.com/<your-username>/breakpoint`.
+
+You need to fork because you don't have write access to the main repo — your changes go to your fork first, then to the main repo via pull request.
+
+### 3. Clone your fork
 
 ```bash
-# On GitHub: click "Fork" at the top of the repo page, then:
 git clone https://github.com/<your-username>/breakpoint.git
 cd breakpoint
 pnpm install
 ```
 
-### 3. Create a branch
+> Replace `<your-username>` with your GitHub username. **Do not** clone `azizbekjuraev/breakpoint` directly — you won't be able to push changes back.
+
+(Optional but recommended) Add the original repo as an `upstream` remote so you can pull in new changes later:
+
+```bash
+git remote add upstream https://github.com/azizbekjuraev/breakpoint.git
+```
+
+### 4. Create a branch
 
 ```bash
 git checkout -b fix/<short-description>
@@ -31,7 +44,7 @@ git checkout -b fix/<short-description>
 
 Use `fix/` for bug fixes, `feat/` for new features, `docs/` for docs-only changes.
 
-### 4. Reproduce the bug locally
+### 5. Reproduce the bug locally
 
 ```bash
 pnpm dev
@@ -39,13 +52,13 @@ pnpm dev
 
 Open http://localhost:4321 and confirm you can see the issue before changing code. If you can't reproduce it, ask in the issue — the bug may depend on browser, viewport, or specific state.
 
-### 5. Make the fix
+### 6. Make the fix
 
 - App code lives in `src/` (components, pages, layouts).
 - Challenge content lives in `content/bugs/` — **don't** edit those unless you're authoring a challenge (see the section below).
 - Keep changes scoped to the bug. Don't refactor unrelated code in the same PR.
 
-### 6. Verify your change
+### 7. Verify your change
 
 Before pushing, run:
 
@@ -57,7 +70,7 @@ pnpm validate-bugs  # only relevant if you touched content/bugs/
 
 Then manually verify in the browser: the bug is gone, and nothing else broke.
 
-### 7. Commit and push
+### 8. Commit and push
 
 ```bash
 git add <files>
@@ -67,7 +80,7 @@ git push origin fix/<short-description>
 
 Keep commit messages short and in the imperative mood (`fix: disable submit when form is empty`, not `fixed the submit button`).
 
-### 8. Open a pull request
+### 9. Open a pull request
 
 Open a PR from your branch against `main` on the upstream repo. The [PR template](./.github/pull_request_template.md) will guide you — fill in:
 
