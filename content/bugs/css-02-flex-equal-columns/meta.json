@@ -1,0 +1,10 @@
+{
+  "id": "css-02-flex-equal-columns",
+  "track": "css",
+  "title": "Three columns refuse to fill the row",
+  "difficulty": 1,
+  "concepts": ["flexbox", "flex-grow", "flex-basis"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "css-iframe"
+}

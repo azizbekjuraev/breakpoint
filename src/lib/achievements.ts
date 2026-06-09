@@ -1,5 +1,5 @@
 import type { ProgressData, CompletedEntry } from './progress';
-import type { Track } from './types';
+import { TRACK_META, type Track } from './types';
 
 export interface AchievementDef {
   id: string;
@@ -68,7 +68,7 @@ const SPECS: Spec[] = [
 ];
 
 function trackLabel(track: Track): string {
-  return track === 'js' ? 'JavaScript' : 'React';
+  return TRACK_META[track].label;
 }
 
 export function getAchievementDefs(track: Track): AchievementDef[] {

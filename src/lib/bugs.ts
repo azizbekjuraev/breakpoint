@@ -5,11 +5,14 @@ const metaModules = import.meta.glob<BugMeta>('/content/bugs/*/meta.json', {
   import: 'default',
 });
 
-const fileModules = import.meta.glob<string>('/content/bugs/*/**/*.{js,jsx,ts,tsx,md}', {
-  eager: true,
-  query: '?raw',
-  import: 'default',
-});
+const fileModules = import.meta.glob<string>(
+  '/content/bugs/*/**/*.{js,jsx,ts,tsx,md,css,html}',
+  {
+    eager: true,
+    query: '?raw',
+    import: 'default',
+  },
+);
 
 interface RawBugFiles {
   starter: Record<string, string>;

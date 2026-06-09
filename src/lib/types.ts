@@ -1,6 +1,29 @@
-export type Track = 'js' | 'react';
+export type Track = 'js' | 'react' | 'css';
 export type Difficulty = 1 | 2 | 3;
-export type RunnerType = 'js-iframe' | 'react-sandpack';
+export type RunnerType = 'js-iframe' | 'react-sandpack' | 'css-iframe';
+
+export const TRACK_META: Record<Track, { label: string; description: string }> = {
+  js: {
+    label: 'JavaScript',
+    description: 'Scope, closures, async, types. Pure language fundamentals.',
+  },
+  react: {
+    label: 'React',
+    description: 'Hooks, state, effects, reconciliation. Assumes JS comfort.',
+  },
+  css: {
+    label: 'CSS',
+    description: 'Flexbox, grid, positioning, overflow. Layout bugs verified by DOM measurement.',
+  },
+};
+
+export const ALL_TRACKS: Track[] = ['js', 'react', 'css'];
+
+export function runnerForTrack(track: Track): RunnerType {
+  if (track === 'js') return 'js-iframe';
+  if (track === 'react') return 'react-sandpack';
+  return 'css-iframe';
+}
 
 export interface BugMeta {
   id: string;

@@ -1,0 +1,10 @@
+{
+  "id": "css-03-grid-gap-not-margin",
+  "track": "css",
+  "title": "Grid items don't line up with the container edge",
+  "difficulty": 2,
+  "concepts": ["css-grid", "gap", "margin-collapse"],
+  "prereqs": ["css-02-flex-equal-columns"],
+  "estimatedMinutes": 6,
+  "runner": "css-iframe"
+}

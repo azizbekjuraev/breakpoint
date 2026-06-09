@@ -1,0 +1,10 @@
+{
+  "id": "css-04-absolute-no-relative",
+  "track": "css",
+  "title": "Badge escapes the card it belongs to",
+  "difficulty": 2,
+  "concepts": ["positioning", "containing-block", "stacking-context"],
+  "prereqs": [],
+  "estimatedMinutes": 6,
+  "runner": "css-iframe"
+}

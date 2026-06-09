@@ -1,0 +1,10 @@
+{
+  "id": "css-05-overflow-clipping",
+  "track": "css",
+  "title": "Long list is cut off with no way to scroll",
+  "difficulty": 2,
+  "concepts": ["overflow", "scrolling", "fixed-height-containers"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "css-iframe"
+}

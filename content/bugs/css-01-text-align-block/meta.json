@@ -1,0 +1,10 @@
+{
+  "id": "css-01-text-align-block",
+  "track": "css",
+  "title": "Button refuses to sit in the middle",
+  "difficulty": 1,
+  "concepts": ["inline-vs-block", "text-align", "horizontal-centering"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "css-iframe"
+}

@@ -3,15 +3,21 @@ import { join } from 'node:path';
 import { z } from 'zod';
 
 const MetaSchema = z.object({
-  id: z.string().regex(/^(js|react)-\d{2}-[a-z0-9-]+$/),
-  track: z.enum(['js', 'react']),
+  id: z.string().regex(/^(js|react|css)-\d{2}-[a-z0-9-]+$/),
+  track: z.enum(['js', 'react', 'css']),
   title: z.string().min(3),
   difficulty: z.number().int().min(1).max(3),
   concepts: z.array(z.string()),
   prereqs: z.array(z.string()).default([]),
   estimatedMinutes: z.number().int().positive(),
-  runner: z.enum(['js-iframe', 'react-sandpack']),
+  runner: z.enum(['js-iframe', 'react-sandpack', 'css-iframe']),
 });
+
+const RUNNER_BY_TRACK = {
+  js: 'js-iframe',
+  react: 'react-sandpack',
+  css: 'css-iframe',
+} as const;
 
 const BUGS_DIR = join('content', 'bugs');
 const errors: string[] = [];
@@ -37,7 +43,7 @@ for (const id of bugDirs) {
   const hasTsxTests = existsSync(join(dir, 'tests.spec.tsx'));
   const hasTsTests = existsSync(join(dir, 'tests.spec.ts'));
   if (!hasJsTests && !hasTsxTests && !hasTsTests) {
-    errors.push(`${id}: missing tests.js or tests.spec.tsx`);
+    errors.push(`${id}: missing tests.js, tests.spec.ts, or tests.spec.tsx`);
   }
 
   const starterDir = join(dir, 'starter');
@@ -61,7 +67,7 @@ for (const id of bugDirs) {
       } else if (parsed.data.id !== id) {
         errors.push(`${id}: meta.id "${parsed.data.id}" does not match folder name`);
       } else {
-        const expectedRunner = parsed.data.track === 'js' ? 'js-iframe' : 'react-sandpack';
+        const expectedRunner = RUNNER_BY_TRACK[parsed.data.track];
         if (parsed.data.runner !== expectedRunner) {
           errors.push(
             `${id}: runner "${parsed.data.runner}" does not match track "${parsed.data.track}" (expected "${expectedRunner}")`,

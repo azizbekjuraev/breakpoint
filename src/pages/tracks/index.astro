@@ -2,9 +2,13 @@
 import Layout from '@/components/astro/Layout.astro';
 import TrackCard from '@/components/astro/TrackCard.astro';
 import { getBugsByTrack } from '@/lib/bugs';
+import { ALL_TRACKS, TRACK_META } from '@/lib/types';
 
-const jsBugs = getBugsByTrack('js');
-const reactBugs = getBugsByTrack('react');
+const tracks = ALL_TRACKS.map((t) => ({
+  track: t,
+  meta: TRACK_META[t],
+  bugIds: getBugsByTrack(t).map((b) => b.meta.id),
+}));
 ---
 
 <Layout title="Tracks — Breakpoint">
@@ -13,20 +17,18 @@ const reactBugs = getBugsByTrack('react');
       >← Home</a
     >
     <h1 class="mb-2 mt-6 text-3xl font-semibold">Choose your track</h1>
-    <p class="mb-10 text-neutral-500">Two paths. Start where you are.</p>
-    <div class="grid gap-4 sm:grid-cols-2">
-      <TrackCard
-        track="js"
-        title="JavaScript"
-        description="Scope, closures, async, types. Pure language fundamentals."
-        bugIds={jsBugs.map((b) => b.meta.id)}
-      />
-      <TrackCard
-        track="react"
-        title="React"
-        description="Hooks, state, effects, reconciliation. Assumes JS comfort."
-        bugIds={reactBugs.map((b) => b.meta.id)}
-      />
+    <p class="mb-10 text-neutral-500">Pick a path. Start where you are.</p>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        tracks.map((t) => (
+          <TrackCard
+            track={t.track}
+            title={t.meta.label}
+            description={t.meta.description}
+            bugIds={t.bugIds}
+          />
+        ))
+      }
     </div>
   </main>
   <script>

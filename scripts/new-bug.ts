@@ -9,13 +9,14 @@ if (!id) {
   process.exit(1);
 }
 
-if (!/^(js|react)-\d{2}-[a-z0-9-]+$/.test(id)) {
-  console.error(`Invalid id "${id}". Format: (js|react)-NN-kebab-case`);
+if (!/^(js|react|css)-\d{2}-[a-z0-9-]+$/.test(id)) {
+  console.error(`Invalid id "${id}". Format: (js|react|css)-NN-kebab-case`);
   process.exit(1);
 }
 
-const track = id.startsWith('js-') ? 'js' : 'react';
-const runner = track === 'js' ? 'js-iframe' : 'react-sandpack';
+const track = id.startsWith('js-') ? 'js' : id.startsWith('react-') ? 'react' : 'css';
+const runner =
+  track === 'js' ? 'js-iframe' : track === 'react' ? 'react-sandpack' : 'css-iframe';
 const dir = join('content', 'bugs', id);
 
 if (existsSync(dir)) {
@@ -65,7 +66,7 @@ if (track === 'js') {
 });
 `,
   );
-} else {
+} else if (track === 'react') {
   writeFileSync(
     join(dir, 'starter', 'App.tsx'),
     `export default function App() {
@@ -81,6 +82,26 @@ if (track === 'js') {
 `,
   );
   writeFileSync(join(dir, 'tests.spec.tsx'), `// TODO: tests for the React bug\n`);
+} else {
+  writeFileSync(
+    join(dir, 'starter', 'index.html'),
+    '<div class="root">\n  <!-- TODO: markup the learner sees (body fragment) -->\n</div>\n',
+  );
+  writeFileSync(join(dir, 'starter', 'styles.css'), '/* TODO: broken CSS the learner edits */\n');
+  writeFileSync(
+    join(dir, 'solution', 'index.html'),
+    '<div class="root">\n  <!-- same markup -->\n</div>\n',
+  );
+  writeFileSync(join(dir, 'solution', 'styles.css'), '/* TODO: correct CSS */\n');
+  writeFileSync(
+    join(dir, 'tests.js'),
+    `test('TODO: describe layout expectation', () => {
+  // const el = document.querySelector('.root');
+  // const rect = el.getBoundingClientRect();
+  // assert.ok(rect.width > 0, 'root should render');
+});
+`,
+  );
 }
 
 console.log(`Created ${dir}`);

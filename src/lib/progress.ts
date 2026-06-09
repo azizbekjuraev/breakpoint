@@ -1,4 +1,4 @@
-import type { Track } from './types';
+import { ALL_TRACKS, type Track } from './types';
 
 const KEY = 'breakpoint:progress:v1';
 
@@ -34,7 +34,7 @@ function normalizeLastEdited(raw: unknown): Record<string, EditedEntry> {
       typeof v === 'object' &&
       typeof (v as EditedEntry).ts === 'number' &&
       typeof (v as EditedEntry).title === 'string' &&
-      ((v as EditedEntry).track === 'js' || (v as EditedEntry).track === 'react')
+      ALL_TRACKS.includes((v as EditedEntry).track)
     ) {
       out[k] = v as EditedEntry;
     }

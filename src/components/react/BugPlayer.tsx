@@ -34,6 +34,7 @@ function readEditorPrefs(): { vimMode: boolean; showPreview: boolean } {
 
 const JsRunner = lazy(() => import('@/runners/js/JsRunner'));
 const ReactRunner = lazy(() => import('@/runners/react/ReactRunner'));
+const CssRunner = lazy(() => import('@/runners/css/CssRunner'));
 const LivePreview = lazy(() => import('@/runners/react/LivePreview'));
 
 export interface BugNav {
@@ -48,12 +49,26 @@ interface Props {
 }
 
 export default function BugPlayer({ bug, nav }: Props) {
-  const firstFile = useMemo(() => {
+  const editorFile = useMemo(() => {
     const keys = Object.keys(bug.files.starter);
+    if (bug.meta.runner === 'css-iframe') {
+      return keys.find((k) => k.endsWith('.css')) ?? keys[0] ?? 'styles.css';
+    }
     return keys[0] ?? 'index.js';
   }, [bug]);
 
-  const starterCode = bug.files.starter[firstFile] ?? '';
+  const cssFixedFiles = useMemo(() => {
+    if (bug.meta.runner !== 'css-iframe') return null;
+    let html = '';
+    let js = '';
+    for (const [name, content] of Object.entries(bug.files.starter)) {
+      if (name.endsWith('.html')) html = content;
+      else if (name.endsWith('.js')) js = content;
+    }
+    return { html, js };
+  }, [bug]);
+
+  const starterCode = bug.files.starter[editorFile] ?? '';
 
   const [code, setCode] = useState<string>(() => {
     const saved = getSavedCode(bug.meta.id);
@@ -66,11 +81,15 @@ export default function BugPlayer({ bug, nav }: Props) {
   const hintState = useHintState(bug.meta.id, bug.files.hints.length);
   const [vimMode, setVimMode] = useState(() => readEditorPrefs().vimMode);
   const [showPreview, setShowPreview] = useState(() => readEditorPrefs().showPreview);
-  const isReact = bug.meta.runner !== 'js-iframe';
+  const isReact = bug.meta.runner === 'react-sandpack';
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
 
-  const language = firstFile.endsWith('.tsx') || firstFile.endsWith('.jsx') ? 'jsx' : 'js';
+  const language: 'js' | 'jsx' | 'css' = editorFile.endsWith('.css')
+    ? 'css'
+    : editorFile.endsWith('.tsx') || editorFile.endsWith('.jsx')
+      ? 'jsx'
+      : 'js';
 
   const initialCodeRef = useRef(code);
 
@@ -279,7 +298,7 @@ export default function BugPlayer({ bug, nav }: Props) {
                 <div className="h-[220px] animate-pulse rounded-lg bg-neutral-100 dark:bg-neutral-800" />
               }
             >
-              <LivePreview files={{ ...bug.files.starter, [firstFile]: code }} />
+              <LivePreview files={{ ...bug.files.starter, [editorFile]: code }} />
             </Suspense>
           </div>
         )}
@@ -288,9 +307,18 @@ export default function BugPlayer({ bug, nav }: Props) {
           <Suspense fallback={<p className="text-sm text-neutral-500">Loading runner…</p>}>
             {bug.meta.runner === 'js-iframe' ? (
               <JsRunner code={code} tests={bug.files.tests} run={running} onResult={handleResult} />
-            ) : (
+            ) : bug.meta.runner === 'react-sandpack' ? (
               <ReactRunner
-                files={{ ...bug.files.starter, [firstFile]: code }}
+                files={{ ...bug.files.starter, [editorFile]: code }}
+                tests={bug.files.tests}
+                run={running}
+                onResult={handleResult}
+              />
+            ) : (
+              <CssRunner
+                html={cssFixedFiles?.html ?? ''}
+                css={code}
+                js={cssFixedFiles?.js ?? ''}
                 tests={bug.files.tests}
                 run={running}
                 onResult={handleResult}

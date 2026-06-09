@@ -18,20 +18,20 @@ export default function JsRunner({ code, tests, run, onResult }: Props) {
     if (!iframe) return;
 
     const html = `<!doctype html>
-<html><head><meta charset="utf-8"></head><body>
-<script>${HARNESS_SCRIPT}</script>
-<script>
-try {
-${code}
-} catch (e) {
-  parent.postMessage({ type: "breakpoint:result", result: { passed: false, total: 0, passedCount: 0, failures: [], logs: [], errors: [e && e.message ? e.message : String(e)], durationMs: 0 } }, "*");
-}
-</script>
-<script>
-${tests}
-window.__breakpointRun();
-</script>
-</body></html>`;
+      <html><head><meta charset="utf-8"></head><body>
+      <script>${HARNESS_SCRIPT}</script>
+      <script>
+      try {
+      ${code}
+      } catch (e) {
+        parent.postMessage({ type: "breakpoint:result", result: { passed: false, total: 0, passedCount: 0, failures: [], logs: [], errors: [e && e.message ? e.message : String(e)], durationMs: 0 } }, "*");
+      }
+      </script>
+      <script>
+      ${tests}
+      window.__breakpointRun();
+      </script>
+      </body></html>`;
 
     function onMessage(e: MessageEvent) {
       if (!iframe || e.source !== iframe.contentWindow) return;

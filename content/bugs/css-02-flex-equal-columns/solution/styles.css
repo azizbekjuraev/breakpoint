@@ -1,0 +1,14 @@
+.row {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  background: #f5f5f5;
+}
+
+.col {
+  flex: 1;
+  background: #cfd8dc;
+  padding: 12px;
+  text-align: center;
+  border-radius: 4px;
+}

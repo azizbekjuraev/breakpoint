@@ -2,26 +2,27 @@
 import Layout from '@/components/astro/Layout.astro';
 import { getBugsByTrack } from '@/lib/bugs';
 import { LEVELS, getLevelBySlug } from '@/lib/levels';
+import { ALL_TRACKS, TRACK_META, type Track } from '@/lib/types';
 
 export function getStaticPaths() {
-  const tracks = ['js', 'react'];
-  return tracks.flatMap((track) =>
+  return ALL_TRACKS.flatMap((track) =>
     LEVELS.map((l) => ({ params: { track, level: l.slug } })),
   );
 }
 
 const { track, level } = Astro.params;
-if (track !== 'js' && track !== 'react') {
+if (!ALL_TRACKS.includes(track as Track)) {
   return Astro.redirect('/tracks');
 }
+const trackTyped = track as Track;
 
 const levelInfo = level ? getLevelBySlug(level) : undefined;
 if (!levelInfo) {
   return Astro.redirect(`/tracks/${track}`);
 }
 
-const bugs = getBugsByTrack(track).filter((b) => b.meta.difficulty === levelInfo.difficulty);
-const trackTitle = track === 'js' ? 'JavaScript' : 'React';
+const bugs = getBugsByTrack(trackTyped).filter((b) => b.meta.difficulty === levelInfo.difficulty);
+const trackTitle = TRACK_META[trackTyped].label;
 ---
 
 <Layout title={`${levelInfo.label} ${trackTitle} — Breakpoint`}>

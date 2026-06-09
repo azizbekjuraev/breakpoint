@@ -6,30 +6,29 @@ import Badge from '@/components/astro/Badge.astro';
 import { getBugsByTrack } from '@/lib/bugs';
 import { LEVELS } from '@/lib/levels';
 import { getAchievementDefs } from '@/lib/achievements';
+import { ALL_TRACKS, TRACK_META, type Track } from '@/lib/types';
 
 export function getStaticPaths() {
-  return [{ params: { track: 'js' } }, { params: { track: 'react' } }];
+  return ALL_TRACKS.map((t) => ({ params: { track: t } }));
 }
 
 const { track } = Astro.params;
-if (track !== 'js' && track !== 'react') {
+if (!ALL_TRACKS.includes(track as Track)) {
   return Astro.redirect('/tracks');
 }
+const trackTyped = track as Track;
 
-const bugs = getBugsByTrack(track);
+const bugs = getBugsByTrack(trackTyped);
 const trackBugIds = bugs.map((b) => b.meta.id);
-const trackTitle = track === 'js' ? 'JavaScript' : 'React';
-const trackDescription =
-  track === 'js'
-    ? 'Scope, closures, async, types. Pure language fundamentals.'
-    : 'Hooks, state, effects, reconciliation. Assumes JS comfort.';
+const trackTitle = TRACK_META[trackTyped].label;
+const trackDescription = TRACK_META[trackTyped].description;
 
 const levels = LEVELS.map((l) => ({
   ...l,
   bugIds: bugs.filter((b) => b.meta.difficulty === l.difficulty).map((b) => b.meta.id),
 }));
 
-const achievementDefs = getAchievementDefs(track);
+const achievementDefs = getAchievementDefs(trackTyped);
 ---
 
 <Layout title={`${trackTitle} — Breakpoint`}>
@@ -53,7 +52,7 @@ const achievementDefs = getAchievementDefs(track);
       {
         levels.map((l) => (
           <LevelCard
-            track={track}
+            track={trackTyped}
             slug={l.slug}
             label={l.label}
             blurb={l.blurb}
