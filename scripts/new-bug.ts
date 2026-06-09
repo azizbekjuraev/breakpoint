@@ -9,14 +9,26 @@ if (!id) {
   process.exit(1);
 }
 
-if (!/^(js|react|css)-\d{2}-[a-z0-9-]+$/.test(id)) {
-  console.error(`Invalid id "${id}". Format: (js|react|css)-NN-kebab-case`);
+if (!/^(js|react|css|a11y)-\d{2}-[a-z0-9-]+$/.test(id)) {
+  console.error(`Invalid id "${id}". Format: (js|react|css|a11y)-NN-kebab-case`);
   process.exit(1);
 }
 
-const track = id.startsWith('js-') ? 'js' : id.startsWith('react-') ? 'react' : 'css';
+const track = id.startsWith('js-')
+  ? 'js'
+  : id.startsWith('react-')
+    ? 'react'
+    : id.startsWith('css-')
+      ? 'css'
+      : 'a11y';
 const runner =
-  track === 'js' ? 'js-iframe' : track === 'react' ? 'react-sandpack' : 'css-iframe';
+  track === 'js'
+    ? 'js-iframe'
+    : track === 'react'
+      ? 'react-sandpack'
+      : track === 'css'
+        ? 'css-iframe'
+        : 'a11y-iframe';
 const dir = join('content', 'bugs', id);
 
 if (existsSync(dir)) {
@@ -82,7 +94,7 @@ if (track === 'js') {
 `,
   );
   writeFileSync(join(dir, 'tests.spec.tsx'), `// TODO: tests for the React bug\n`);
-} else {
+} else if (track === 'css') {
   writeFileSync(
     join(dir, 'starter', 'index.html'),
     '<div class="root">\n  <!-- TODO: markup the learner sees (body fragment) -->\n</div>\n',
@@ -99,6 +111,27 @@ if (track === 'js') {
   // const el = document.querySelector('.root');
   // const rect = el.getBoundingClientRect();
   // assert.ok(rect.width > 0, 'root should render');
+});
+`,
+  );
+} else {
+  writeFileSync(
+    join(dir, 'starter', 'index.html'),
+    '<div class="root">\n  <!-- TODO: markup with a11y violation -->\n</div>\n',
+  );
+  writeFileSync(
+    join(dir, 'starter', 'styles.css'),
+    '/* Visual styling — not edited by the learner */\n',
+  );
+  writeFileSync(
+    join(dir, 'solution', 'index.html'),
+    '<div class="root">\n  <!-- TODO: fixed markup -->\n</div>\n',
+  );
+  writeFileSync(join(dir, 'solution', 'styles.css'), '/* same styling */\n');
+  writeFileSync(
+    join(dir, 'tests.js'),
+    `test('TODO: name the a11y rule', async () => {
+  await assertAxePasses(['TODO-rule-id']);
 });
 `,
   );

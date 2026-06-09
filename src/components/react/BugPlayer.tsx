@@ -35,12 +35,14 @@ function readEditorPrefs(): { vimMode: boolean; showPreview: boolean } {
 const JsRunner = lazy(() => import('@/runners/js/JsRunner'));
 const ReactRunner = lazy(() => import('@/runners/react/ReactRunner'));
 const CssRunner = lazy(() => import('@/runners/css/CssRunner'));
+const A11yRunner = lazy(() => import('@/runners/a11y/A11yRunner'));
 const LivePreview = lazy(() => import('@/runners/react/LivePreview'));
 
 export interface BugNav {
   position: { index: number; total: number };
   next: { id: string; title: string } | null;
   track: Track;
+  level: { slug: string; label: string };
 }
 
 interface Props {
@@ -54,6 +56,9 @@ export default function BugPlayer({ bug, nav }: Props) {
     if (bug.meta.runner === 'css-iframe') {
       return keys.find((k) => k.endsWith('.css')) ?? keys[0] ?? 'styles.css';
     }
+    if (bug.meta.runner === 'a11y-iframe') {
+      return keys.find((k) => k.endsWith('.html')) ?? keys[0] ?? 'index.html';
+    }
     return keys[0] ?? 'index.js';
   }, [bug]);
 
@@ -66,6 +71,14 @@ export default function BugPlayer({ bug, nav }: Props) {
       else if (name.endsWith('.js')) js = content;
     }
     return { html, js };
+  }, [bug]);
+
+  const a11yFixedCss = useMemo(() => {
+    if (bug.meta.runner !== 'a11y-iframe') return null;
+    for (const [name, content] of Object.entries(bug.files.starter)) {
+      if (name.endsWith('.css')) return content;
+    }
+    return '';
   }, [bug]);
 
   const starterCode = bug.files.starter[editorFile] ?? '';
@@ -85,11 +98,13 @@ export default function BugPlayer({ bug, nav }: Props) {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
 
-  const language: 'js' | 'jsx' | 'css' = editorFile.endsWith('.css')
+  const language: 'js' | 'jsx' | 'css' | 'html' = editorFile.endsWith('.css')
     ? 'css'
-    : editorFile.endsWith('.tsx') || editorFile.endsWith('.jsx')
-      ? 'jsx'
-      : 'js';
+    : editorFile.endsWith('.html')
+      ? 'html'
+      : editorFile.endsWith('.tsx') || editorFile.endsWith('.jsx')
+        ? 'jsx'
+        : 'js';
 
   const initialCodeRef = useRef(code);
 
@@ -145,16 +160,16 @@ export default function BugPlayer({ bug, nav }: Props) {
   const isDirty = code !== starterCode;
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[1fr_440px]">
-      <div className="flex flex-col border-r border-neutral-200 dark:border-neutral-800">
+    <div className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_440px]">
+      <div className="flex min-w-0 flex-col border-r border-neutral-200 dark:border-neutral-800">
         <header className="flex items-center justify-between gap-4 border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
           <div className="min-w-0">
             <div className="mb-1 flex items-center gap-3">
               <a
-                href={`/tracks/${nav.track}`}
+                href={`/tracks/${nav.track}/${nav.level.slug}`}
                 className="text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100"
               >
-                ← Track
+                ← {nav.level.label}
               </a>
               <span className="font-mono text-xs text-neutral-400">
                 {nav.position.index} / {nav.position.total}
@@ -314,11 +329,19 @@ export default function BugPlayer({ bug, nav }: Props) {
                 run={running}
                 onResult={handleResult}
               />
-            ) : (
+            ) : bug.meta.runner === 'css-iframe' ? (
               <CssRunner
                 html={cssFixedFiles?.html ?? ''}
                 css={code}
                 js={cssFixedFiles?.js ?? ''}
+                tests={bug.files.tests}
+                run={running}
+                onResult={handleResult}
+              />
+            ) : (
+              <A11yRunner
+                html={code}
+                css={a11yFixedCss ?? ''}
                 tests={bug.files.tests}
                 run={running}
                 onResult={handleResult}

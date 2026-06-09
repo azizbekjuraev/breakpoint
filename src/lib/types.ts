@@ -1,6 +1,6 @@
-export type Track = 'js' | 'react' | 'css';
+export type Track = 'js' | 'react' | 'css' | 'a11y';
 export type Difficulty = 1 | 2 | 3;
-export type RunnerType = 'js-iframe' | 'react-sandpack' | 'css-iframe';
+export type RunnerType = 'js-iframe' | 'react-sandpack' | 'css-iframe' | 'a11y-iframe';
 
 export const TRACK_META: Record<Track, { label: string; description: string }> = {
   js: {
@@ -15,14 +15,19 @@ export const TRACK_META: Record<Track, { label: string; description: string }> =
     label: 'CSS',
     description: 'Flexbox, grid, positioning, overflow. Layout bugs verified by DOM measurement.',
   },
+  a11y: {
+    label: 'Accessibility',
+    description: 'Labels, names, semantics, structure. Markup bugs verified by axe-core.',
+  },
 };
 
-export const ALL_TRACKS: Track[] = ['js', 'react', 'css'];
+export const ALL_TRACKS: Track[] = ['js', 'react', 'css', 'a11y'];
 
 export function runnerForTrack(track: Track): RunnerType {
   if (track === 'js') return 'js-iframe';
   if (track === 'react') return 'react-sandpack';
-  return 'css-iframe';
+  if (track === 'css') return 'css-iframe';
+  return 'a11y-iframe';
 }
 
 export interface BugMeta {

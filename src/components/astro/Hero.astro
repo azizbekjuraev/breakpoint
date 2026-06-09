@@ -60,6 +60,7 @@ const validBugIds = getAllBugs().map((b) => b.meta.id);
 <script>
   import { getProgress } from '@/lib/progress';
   import { findResumeCandidate } from '@/lib/stats';
+  import { TRACK_META } from '@/lib/types';
 
   function hydrateResume() {
     const card = document.getElementById('resume-card') as HTMLAnchorElement | null;
@@ -78,7 +79,7 @@ const validBugIds = getAllBugs().map((b) => b.meta.id);
     const titleEl = card.querySelector('[data-resume-title]');
     const trackEl = card.querySelector('[data-resume-track]');
     if (titleEl) titleEl.textContent = candidate.title;
-    if (trackEl) trackEl.textContent = candidate.track === 'js' ? 'JavaScript' : 'React';
+    if (trackEl) trackEl.textContent = TRACK_META[candidate.track].label;
     card.classList.remove('hidden');
   }
 

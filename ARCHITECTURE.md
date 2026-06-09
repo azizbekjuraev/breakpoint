@@ -14,19 +14,31 @@ Breakpoint is a content-driven application built with Astro. It provides a platf
 
 ## Runners
 
-We support two distinct execution environments based on the track:
+Each track has its own execution environment, chosen to fit what the bug class actually tests. All runners report back to the parent via `postMessage({ type: 'breakpoint:result', result })`.
 
 ### JS Track (`js-iframe`)
 
-- **Mechanism**: Uses a hidden `<iframe>` to execute vanilla JavaScript.
-- **Harness**: `src/runners/js/harness.ts` injects a custom test suite into the iframe. It captures `console.log` and provides `assert` utilities.
-- **Isolation**: Provides a clean global scope for each test run.
+- **Mechanism**: Hidden `<iframe>` executes vanilla JavaScript.
+- **Harness**: `src/runners/js/harness.ts` — captures `console.log`, exposes `assert.ok/equal/deepEqual/throws`, `wait`, `getLogs`.
+- **Isolation**: Clean global scope per test run.
 
 ### React Track (`react-sandpack`)
 
 - **Mechanism**: Powered by CodeSandbox's **Sandpack**.
-- **Harness**: `src/runners/react/harness.ts`. It leverages Sandpack's internal listener to detect successful renders and run unit tests against the React components.
-- **Flexibility**: Allows for complex React environments (dependencies, multiple files) without managing a custom bundling logic.
+- **Harness**: `src/runners/react/harness.ts` — hooks Sandpack's listener to detect successful renders and run unit tests against the rendered components.
+- **Flexibility**: Multi-file React projects with real dependencies; no custom bundler logic.
+
+### CSS Track (`css-iframe`)
+
+- **Mechanism**: Visible sandboxed `<iframe>` whose body is the learner's HTML + CSS. Tests measure the rendered geometry.
+- **Harness**: `src/runners/css/harness.ts` — DOM helpers (`$`, `$$`, `rect`, `style`, `center`) plus `assert.close` for tolerance-based comparisons.
+- **Timing**: Double-`requestAnimationFrame` before tests run, so layout has settled.
+
+### Accessibility Track (`a11y-iframe`)
+
+- **Mechanism**: Visible sandboxed `<iframe>` with axe-core inlined into the document via `?raw` import (lazy-loaded — ships only in the A11yRunner chunk).
+- **Harness**: `src/runners/a11y/harness.ts` — exposes `axeRun(rules?)` and `assertAxePasses(rules?)`. Tests scope axe to specific rule ids (e.g. `['label']`, `['button-name']`) so unrelated violations don't bite.
+- **Edit target**: The learner edits HTML; CSS in the starter is fixed visual styling.
 
 ## Validation
 
@@ -34,7 +46,7 @@ To maintain content quality, we use `scripts/validate-bugs.ts`. This script runs
 
 - Every bug folder has the required files.
 - `meta.json` follows the correct schema (using Zod).
-- The `runner` matches the `track` (e.g., JS bugs must use the `js-iframe` runner).
+- The `runner` matches the `track` (e.g., JS bugs must use the `js-iframe` runner; a11y bugs must use `a11y-iframe`).
 
 ## Tech Stack
 

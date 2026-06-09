@@ -2,6 +2,7 @@
 import Layout from '@/components/astro/Layout.astro';
 import BugPlayer from '@/components/react/BugPlayer.tsx';
 import { getAllBugs, getBugBySlug, getBugsByTrack } from '@/lib/bugs';
+import { LEVELS } from '@/lib/levels';
 import type { Bug } from '@/lib/types';
 
 export function getStaticPaths() {
@@ -19,11 +20,13 @@ if (!bug) {
 const trackBugs = getBugsByTrack(bug.meta.track);
 const idx = trackBugs.findIndex((b) => b.meta.id === bug.meta.id);
 const nextBug = trackBugs[idx + 1];
+const level = LEVELS.find((l) => l.difficulty === bug.meta.difficulty) ?? LEVELS[0];
 
 const nav = {
   position: { index: idx + 1, total: trackBugs.length },
   next: nextBug ? { id: nextBug.meta.id, title: nextBug.meta.title } : null,
   track: bug.meta.track,
+  level: { slug: level.slug, label: level.label },
 };
 
 const clientBug: Bug = {

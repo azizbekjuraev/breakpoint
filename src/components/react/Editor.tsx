@@ -4,17 +4,19 @@ import { vim } from '@replit/codemirror-vim';
 import { EditorState, type Extension } from '@codemirror/state';
 import { javascript } from '@codemirror/lang-javascript';
 import { css } from '@codemirror/lang-css';
+import { html } from '@codemirror/lang-html';
 import { oneDark } from '@codemirror/theme-one-dark';
 
 interface Props {
   value: string;
   onChange: (next: string) => void;
-  language?: 'js' | 'jsx' | 'css';
+  language?: 'js' | 'jsx' | 'css' | 'html';
   vimMode?: boolean;
 }
 
-function langExtension(language: 'js' | 'jsx' | 'css'): Extension {
+function langExtension(language: 'js' | 'jsx' | 'css' | 'html'): Extension {
   if (language === 'css') return css();
+  if (language === 'html') return html();
   return javascript({ jsx: language === 'jsx', typescript: language === 'jsx' });
 }
 

@@ -1,0 +1,37 @@
+body {
+  padding: 24px;
+}
+
+.card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  max-width: 360px;
+  align-items: center;
+}
+
+.thumb {
+  width: 96px;
+  height: 72px;
+  border-radius: 6px;
+  display: block;
+}
+
+.meta {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.price {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}

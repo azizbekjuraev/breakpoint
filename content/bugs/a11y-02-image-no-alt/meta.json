@@ -1,0 +1,10 @@
+{
+  "id": "a11y-02-image-no-alt",
+  "track": "a11y",
+  "title": "Product card image missing alt text",
+  "difficulty": 1,
+  "concepts": ["image-alt", "decorative-vs-informative", "alt-attribute"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "a11y-iframe"
+}

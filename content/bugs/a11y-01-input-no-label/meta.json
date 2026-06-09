@@ -1,0 +1,10 @@
+{
+  "id": "a11y-01-input-no-label",
+  "track": "a11y",
+  "title": "Search box that screen readers can't name",
+  "difficulty": 1,
+  "concepts": ["form-labels", "label-association", "implicit-vs-explicit-labels"],
+  "prereqs": [],
+  "estimatedMinutes": 4,
+  "runner": "a11y-iframe"
+}

@@ -3,20 +3,21 @@ import { join } from 'node:path';
 import { z } from 'zod';
 
 const MetaSchema = z.object({
-  id: z.string().regex(/^(js|react|css)-\d{2}-[a-z0-9-]+$/),
-  track: z.enum(['js', 'react', 'css']),
+  id: z.string().regex(/^(js|react|css|a11y)-\d{2}-[a-z0-9-]+$/),
+  track: z.enum(['js', 'react', 'css', 'a11y']),
   title: z.string().min(3),
   difficulty: z.number().int().min(1).max(3),
   concepts: z.array(z.string()),
   prereqs: z.array(z.string()).default([]),
   estimatedMinutes: z.number().int().positive(),
-  runner: z.enum(['js-iframe', 'react-sandpack', 'css-iframe']),
+  runner: z.enum(['js-iframe', 'react-sandpack', 'css-iframe', 'a11y-iframe']),
 });
 
 const RUNNER_BY_TRACK = {
   js: 'js-iframe',
   react: 'react-sandpack',
   css: 'css-iframe',
+  a11y: 'a11y-iframe',
 } as const;
 
 const BUGS_DIR = join('content', 'bugs');

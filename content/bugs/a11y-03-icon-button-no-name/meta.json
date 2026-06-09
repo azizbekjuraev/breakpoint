@@ -1,0 +1,10 @@
+{
+  "id": "a11y-03-icon-button-no-name",
+  "track": "a11y",
+  "title": "Icon-only close button announces as 'button, blank'",
+  "difficulty": 2,
+  "concepts": ["accessible-name", "aria-label", "icon-buttons", "svg-icons"],
+  "prereqs": ["a11y-01-input-no-label"],
+  "estimatedMinutes": 5,
+  "runner": "a11y-iframe"
+}

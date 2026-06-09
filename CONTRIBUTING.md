@@ -112,8 +112,8 @@ content/bugs/<id>/
 
 ### Naming
 
-- Track prefix: `js-` for vanilla JS, `react-` for React
-- Numeric order: `js-01-closure-loop`, `js-02-array-mutation`
+- Track prefix: `js-` for vanilla JS, `react-` for React, `css-` for CSS/layout, `a11y-` for accessibility
+- Numeric order within a track: `js-01-closure-loop`, `js-02-array-mutation`
 - Kebab-case slug describes the symptom or concept
 
 ### Quality bar
@@ -143,3 +143,41 @@ await wait(ms);
 const logs = getLogs(); // string[]
 clearLogs();
 ```
+
+### Test API (CSS track)
+
+CSS bugs render HTML + CSS inside a sandboxed iframe. The harness waits for layout to settle, then your `tests.js` runs against the live DOM:
+
+```js
+test('description', () => { /* ... */ });
+assert.ok(cond, msg?);
+assert.equal(a, b, msg?);
+assert.close(a, b, tol?, msg?);   // numeric tolerance (default ±1)
+assert.throws(fn, msg?);
+
+const el = $('.selector');         // throws if missing
+const els = $$('.selector');       // array
+const r = rect(target);            // getBoundingClientRect
+const v = style(target, 'prop');   // computed style value
+const c = center(target);          // { x, y }
+```
+
+The starter contains `index.html` (fixed body fragment) and `styles.css` (the file the learner edits). Optionally include `index.js` for fixed runtime behavior.
+
+### Test API (Accessibility track)
+
+a11y bugs render the learner's HTML inside a sandboxed iframe with axe-core injected. Tests scope axe to the specific rule(s) the bug is about so unrelated violations don't surface:
+
+```js
+test('description', async () => { /* ... */ });
+assert.ok(cond, msg?);
+assert.equal(a, b, msg?);
+
+const el = $('.selector');         // throws if missing
+const els = $$('.selector');       // array
+
+await assertAxePasses(['label']);  // pass = zero violations of the listed rules
+const result = await axeRun(['button-name']); // full axe result if you need details
+```
+
+Pair the axe rule with a content-specific assertion so the test also rejects "fix the lint, leave the meaning wrong" workarounds — e.g. check that the link's accessible name is descriptive, not just non-empty. The starter contains `index.html` (the file the learner edits) and `styles.css` (fixed visual styling).

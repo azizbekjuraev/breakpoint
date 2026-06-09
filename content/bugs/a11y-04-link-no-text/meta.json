@@ -1,0 +1,10 @@
+{
+  "id": "a11y-04-link-no-text",
+  "track": "a11y",
+  "title": "Social icon links read as 'link, link, link'",
+  "difficulty": 2,
+  "concepts": ["link-name", "icon-links", "accessible-name", "social-icons"],
+  "prereqs": ["a11y-03-icon-button-no-name"],
+  "estimatedMinutes": 5,
+  "runner": "a11y-iframe"
+}
