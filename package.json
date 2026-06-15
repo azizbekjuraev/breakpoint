@@ -7,15 +7,18 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "pnpm run build && wrangler dev",
     "check": "astro check && pnpm lint",
     "lint": "eslint .",
     "format": "prettier --write .",
     "validate-bugs": "tsx scripts/validate-bugs.ts",
     "new-bug": "tsx scripts/new-bug.ts",
-    "size": "size-limit"
+    "size": "size-limit",
+    "deploy": "pnpm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "12",
     "@astrojs/react": "^4.2.0",
     "@astrojs/tailwind": "^5.1.5",
     "@codemirror/lang-css": "^6.3.1",
@@ -55,6 +58,7 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.60.0",
+    "wrangler": "^4.100.0",
     "zod": "^3.24.0"
   }
 }
