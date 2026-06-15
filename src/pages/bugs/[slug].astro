@@ -22,11 +22,24 @@ const idx = trackBugs.findIndex((b) => b.meta.id === bug.meta.id);
 const nextBug = trackBugs[idx + 1];
 const level = LEVELS.find((l) => l.difficulty === bug.meta.difficulty) ?? LEVELS[0];
 
+const levelBugs = trackBugs
+  .filter((b) => b.meta.difficulty === bug.meta.difficulty)
+  .map((b) => ({ id: b.meta.id, title: b.meta.title }));
+
+const allBugs = getAllBugs().map((b) => ({
+  id: b.meta.id,
+  title: b.meta.title,
+  track: b.meta.track,
+  concepts: b.meta.concepts,
+}));
+
 const nav = {
   position: { index: idx + 1, total: trackBugs.length },
   next: nextBug ? { id: nextBug.meta.id, title: nextBug.meta.title } : null,
   track: bug.meta.track,
   level: { slug: level.slug, label: level.label },
+  levelBugs,
+  allBugs,
 };
 
 const clientBug: Bug = {

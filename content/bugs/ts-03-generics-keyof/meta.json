@@ -1,0 +1,10 @@
+{
+  "id": "ts-03-generics-keyof",
+  "track": "ts",
+  "title": "pluck() forgets which key it returned",
+  "difficulty": 2,
+  "concepts": ["generics", "keyof", "indexed-access-types"],
+  "prereqs": ["ts-01-narrowing-typeof"],
+  "estimatedMinutes": 8,
+  "runner": "ts-typecheck"
+}

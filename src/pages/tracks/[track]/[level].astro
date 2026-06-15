@@ -1,5 +1,6 @@
 ---
 import Layout from '@/components/astro/Layout.astro';
+import BugList from '@/components/react/BugList.tsx';
 import { getBugsByTrack } from '@/lib/bugs';
 import { LEVELS, getLevelBySlug } from '@/lib/levels';
 import { ALL_TRACKS, TRACK_META, type Track } from '@/lib/types';
@@ -21,7 +22,14 @@ if (!levelInfo) {
   return Astro.redirect(`/tracks/${track}`);
 }
 
-const bugs = getBugsByTrack(trackTyped).filter((b) => b.meta.difficulty === levelInfo.difficulty);
+const bugs = getBugsByTrack(trackTyped)
+  .filter((b) => b.meta.difficulty === levelInfo.difficulty)
+  .map((b) => ({
+    id: b.meta.id,
+    title: b.meta.title,
+    estimatedMinutes: b.meta.estimatedMinutes,
+    concepts: b.meta.concepts,
+  }));
 const trackTitle = TRACK_META[trackTyped].label;
 ---
 
@@ -34,66 +42,13 @@ const trackTitle = TRACK_META[trackTyped].label;
     >
     <h1 class="mb-2 mt-6 text-3xl font-semibold">{levelInfo.label}</h1>
     <p class="mb-6 text-neutral-500">{levelInfo.blurb}</p>
-    <p id="track-summary" class="mb-8 font-mono text-sm text-neutral-500">
-      {bugs.length}
-      {bugs.length === 1 ? 'bug' : 'bugs'}
-    </p>
 
     {
       bugs.length === 0 ? (
         <p class="italic text-neutral-500">No bugs in this section yet.</p>
       ) : (
-        <ol class="space-y-2">
-          {bugs.map((bug) => (
-            <li>
-              <a
-                href={`/bugs/${bug.meta.id}`}
-                data-bug-id={bug.meta.id}
-                class="flex items-center justify-between gap-4 rounded-md border border-neutral-200 p-4 transition hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
-              >
-                <div class="min-w-0">
-                  <p class="font-mono text-xs text-neutral-500">{bug.meta.id}</p>
-                  <p class="truncate font-medium">{bug.meta.title}</p>
-                </div>
-                <div class="flex shrink-0 items-center gap-3 text-xs">
-                  <span class="text-neutral-500">~{bug.meta.estimatedMinutes}m</span>
-                  <span
-                    data-check
-                    class="hidden font-semibold text-emerald-600 dark:text-emerald-400"
-                    aria-label="Completed"
-                  >
-                    ✓
-                  </span>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ol>
+        <BugList bugs={bugs} client:load />
       )
     }
   </main>
-  <script>
-    import { getProgress } from '@/lib/progress';
-
-    function updateProgress() {
-      const done = new Set(Object.keys(getProgress().completed));
-      const items = document.querySelectorAll('a[data-bug-id]');
-      let count = 0;
-      items.forEach((item) => {
-        const id = item.getAttribute('data-bug-id');
-        if (id && done.has(id)) {
-          count++;
-          item.setAttribute('data-completed', '');
-          const check = item.querySelector('[data-check]');
-          if (check) check.classList.remove('hidden');
-        }
-      });
-      const summary = document.getElementById('track-summary');
-      if (summary && items.length > 0) {
-        summary.textContent = `${count} / ${items.length} completed`;
-      }
-    }
-
-    document.addEventListener('astro:page-load', updateProgress);
-  </script>
 </Layout>

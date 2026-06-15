@@ -1,6 +1,11 @@
-export type Track = 'js' | 'react' | 'css' | 'a11y';
+export type Track = 'js' | 'react' | 'css' | 'a11y' | 'ts';
 export type Difficulty = 1 | 2 | 3;
-export type RunnerType = 'js-iframe' | 'react-sandpack' | 'css-iframe' | 'a11y-iframe';
+export type RunnerType =
+  | 'js-iframe'
+  | 'react-sandpack'
+  | 'css-iframe'
+  | 'a11y-iframe'
+  | 'ts-typecheck';
 
 export const TRACK_META: Record<Track, { label: string; description: string }> = {
   js: {
@@ -19,15 +24,21 @@ export const TRACK_META: Record<Track, { label: string; description: string }> =
     label: 'Accessibility',
     description: 'Labels, names, semantics, structure. Markup bugs verified by axe-core.',
   },
+  ts: {
+    label: 'TypeScript',
+    description:
+      'Narrowing, inference, generics, satisfies, conditional types. Bugs verified by the TS compiler.',
+  },
 };
 
-export const ALL_TRACKS: Track[] = ['js', 'react', 'css', 'a11y'];
+export const ALL_TRACKS: Track[] = ['js', 'react', 'css', 'a11y', 'ts'];
 
 export function runnerForTrack(track: Track): RunnerType {
   if (track === 'js') return 'js-iframe';
   if (track === 'react') return 'react-sandpack';
   if (track === 'css') return 'css-iframe';
-  return 'a11y-iframe';
+  if (track === 'a11y') return 'a11y-iframe';
+  return 'ts-typecheck';
 }
 
 export interface BugMeta {

@@ -1,0 +1,10 @@
+{
+  "id": "ts-02-find-undefined",
+  "track": "ts",
+  "title": "find() returns T | undefined, but the code ignores undefined",
+  "difficulty": 1,
+  "concepts": ["optional-types", "undefined-narrowing", "array-find"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "ts-typecheck"
+}

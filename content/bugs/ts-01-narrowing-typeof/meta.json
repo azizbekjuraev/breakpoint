@@ -1,0 +1,10 @@
+{
+  "id": "ts-01-narrowing-typeof",
+  "track": "ts",
+  "title": "format() calls toUpperCase on a number",
+  "difficulty": 1,
+  "concepts": ["union-types", "type-narrowing", "typeof-guards"],
+  "prereqs": [],
+  "estimatedMinutes": 5,
+  "runner": "ts-typecheck"
+}

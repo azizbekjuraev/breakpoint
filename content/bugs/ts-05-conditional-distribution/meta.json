@@ -1,0 +1,10 @@
+{
+  "id": "ts-05-conditional-distribution",
+  "track": "ts",
+  "title": "ToArray<T | U> distributes when it shouldn't",
+  "difficulty": 3,
+  "concepts": ["conditional-types", "distributive-conditionals", "tuple-trick"],
+  "prereqs": ["ts-03-generics-keyof"],
+  "estimatedMinutes": 10,
+  "runner": "ts-typecheck"
+}

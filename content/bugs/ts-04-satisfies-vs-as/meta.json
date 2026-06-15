@@ -1,0 +1,10 @@
+{
+  "id": "ts-04-satisfies-vs-as",
+  "track": "ts",
+  "title": "as Config widens the literal types away",
+  "difficulty": 2,
+  "concepts": ["satisfies-operator", "type-assertions", "literal-types"],
+  "prereqs": ["ts-03-generics-keyof"],
+  "estimatedMinutes": 8,
+  "runner": "ts-typecheck"
+}

@@ -7,20 +7,29 @@ import { css } from '@codemirror/lang-css';
 import { html } from '@codemirror/lang-html';
 import { oneDark } from '@codemirror/theme-one-dark';
 
+type Language = 'js' | 'jsx' | 'ts' | 'tsx' | 'css' | 'html';
+
 interface Props {
   value: string;
   onChange: (next: string) => void;
-  language?: 'js' | 'jsx' | 'css' | 'html';
+  language?: Language;
   vimMode?: boolean;
 }
 
-function langExtension(language: 'js' | 'jsx' | 'css' | 'html'): Extension {
+function langExtension(language: Language): Extension {
   if (language === 'css') return css();
   if (language === 'html') return html();
-  return javascript({ jsx: language === 'jsx', typescript: language === 'jsx' });
+  const jsx = language === 'jsx' || language === 'tsx';
+  const typescript = language === 'ts' || language === 'tsx' || language === 'jsx';
+  return javascript({ jsx, typescript });
 }
 
-export default function Editor({ value, onChange, language = 'js', vimMode = false }: Props) {
+export default function Editor({
+  value,
+  onChange,
+  language = 'js',
+  vimMode = false,
+}: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
 
